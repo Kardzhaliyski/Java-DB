@@ -13,6 +13,7 @@ public class Main {
         System.out.println();
         System.out.print("Enter password (default: empty): ");
         String password = sc.nextLine().trim();
+        System.out.println();
 
         Properties props = new Properties();
         props.setProperty("user", user);
@@ -20,14 +21,19 @@ public class Main {
 
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/diablo", props);
 
+        PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT user_name, u.first_name, u.last_name, COUNT(ug.user_id) AS game_count " +
+                        "FROM users AS u " +
+                        "JOIN users_games AS ug " +
+                        "ON u.id = ug.user_id " +
+                        "WHERE user_name = ?  " +
+                        "GROUP BY u.id");
+
+        String username = sc.nextLine();
+        preparedStatement.setString(1, username);
+
 //        PreparedStatement preparedStatement = connection.prepareStatement(
 //                "SELECT user_name,u.first_name, u.last_name, COUNT(ug.user_id) AS game_count FROM users AS u JOIN users_games AS ug ON u.id = ug.user_id  GROUP BY u.id");
-
-//        String username = "nakov";
-//        preparedStatement.setString(1, username);
-
-        PreparedStatement preparedStatement = connection.prepareStatement(
-                "SELECT user_name,u.first_name, u.last_name, COUNT(ug.user_id) AS game_count FROM users AS u JOIN users_games AS ug ON u.id = ug.user_id  GROUP BY u.id");
 
         ResultSet rs = preparedStatement.executeQuery();
 
