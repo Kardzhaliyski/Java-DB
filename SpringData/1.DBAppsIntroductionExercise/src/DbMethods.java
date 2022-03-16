@@ -3,18 +3,19 @@ import java.sql.*;
 public class DbMethods {
 
     public static String getVillainsInfo(Connection connection, int numberOfMinions) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("SELECT\n" +
-                "    v.name villain_name,\n" +
-                "    COUNT(m.id) minion_count\n" +
-                "FROM\n" +
-                "    villains v\n" +
-                "        JOIN minions_villains mv on v.id = mv.villain_id\n" +
-                "        JOIN minions m on m.id = mv.minion_id\n" +
-                "GROUP BY\n" +
-                "    v.id\n" +
-                "HAVING\n" +
-                "    minion_count > ? " +
-                "ORDER BY minion_count;");
+        PreparedStatement statement = connection.prepareStatement(
+                "SELECT" +
+                " v.name villain_name," +
+                " COUNT(m.id) minion_count" +
+                " FROM" +
+                " villains v" +
+                " JOIN minions_villains mv on v.id = mv.villain_id" +
+                " JOIN minions m on m.id = mv.minion_id" +
+                " GROUP BY" +
+                " v.id" +
+                " HAVING" +
+                " minion_count > ?" +
+                " ORDER BY minion_count;");
 
         statement.setInt(1, numberOfMinions);
 
@@ -32,15 +33,16 @@ public class DbMethods {
     }
 
     public static String getMinionsInfo(Connection connection, int villainId) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT\n" +
-                "    v.name villain_name,\n" +
-                "    m.name minion_name,\n" +
-                "    m.age minion_age\n" +
-                "FROM\n" +
-                "     villains v\n" +
-                "        JOIN minions_villains mv on v.id = mv.villain_id\n" +
-                "        JOIN minions m on m.id = mv.minion_id\n" +
-                "WHERE v.id = ?;");
+        PreparedStatement statement = connection.prepareStatement(
+                "SELECT DISTINCT" +
+                " v.name villain_name," +
+                " m.name minion_name," +
+                " m.age minion_age" +
+                " FROM" +
+                " villains v" +
+                " JOIN minions_villains mv on v.id = mv.villain_id" +
+                " JOIN minions m on m.id = mv.minion_id" +
+                " WHERE v.id = ?;");
 
                 statement.setInt(1, villainId);
 
