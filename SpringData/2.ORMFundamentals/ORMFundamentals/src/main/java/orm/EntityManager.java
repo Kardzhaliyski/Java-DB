@@ -123,7 +123,7 @@ public class EntityManager<E> implements DbContext<E> {
 
     private int doInsert(E entity) throws IllegalAccessException, SQLException {
         String tableName = getTableName(entity.getClass());
-        String[] tableFields = getColumnsWithoutId(entity.getClass());
+        String[] tableFields = getColumnNamesWithoutId(entity.getClass());
         String[] tableValues = getColumnsValuesWithoutId(entity);
 
         String insertQuery = String.format("INSERT INTO %s(%s) VALUES (%s);",
@@ -140,7 +140,7 @@ public class EntityManager<E> implements DbContext<E> {
 
     private int doUpdate(E entity, Object id) throws IllegalAccessException, SQLException {
         String tableName = getTableName(entity.getClass());
-        String[] tableFields = getColumnsWithoutId(entity.getClass());
+        String[] tableFields = getColumnNamesWithoutId(entity.getClass());
         String[] tableValues = getColumnsValuesWithoutId(entity);
 
         ArrayList<String> updates = new ArrayList<>();
@@ -155,6 +155,98 @@ public class EntityManager<E> implements DbContext<E> {
                 id);
 
         return connection.prepareStatement(updateQuery).executeUpdate();
+    }
+
+    public void doCreate(Class<?> aClass) throws SQLException {
+        String tableName = getTableName(aClass);
+
+
+        String updateQuery = String.format("CREATE TABLE `%s` (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, %s)",
+                tableName,
+                getAllFieldsAndDataTypesWithoutId(aClass));
+
+        connection.prepareStatement(updateQuery).execute();
+
+    }
+
+    public void doAlter (Class<?> aClass) throws SQLException {
+        String tableName = getTableName(aClass);
+
+        String[] classColumnNames = getColumnNamesWithoutId(aClass);
+        List<String> tableColumnNames = getTableColumnNames(tableName);
+        List<String> columnsNamesToAdd = new ArrayList<>();
+        for (String columnName : classColumnNames) {
+            if(!tableColumnNames.contains(columnName)) {
+                columnsNamesToAdd.add(columnName);
+            }
+        }
+
+        if(columnsNamesToAdd.size() == 0) {
+            return;
+        }
+
+        List<String> addColumnsStatements = new ArrayList<>();
+
+        Arrays.stream(aClass.getDeclaredFields())
+                .filter(c -> columnsNamesToAdd.contains(c.getAnnotationsByType(Column.class)[0].name()))
+                .forEach(f -> addColumnsStatements
+                        .add("ADD COLUMN " + f.getAnnotation(Column.class).name() + " " + parseVariableType(f.getType())));
+
+
+        String query = String.format("ALTER TABLE %s %s",
+                aClass.getAnnotation(Entity.class).name(),
+                String.join(", ", addColumnsStatements));
+
+        connection.prepareStatement(query).executeUpdate();
+    }
+
+    public int doDelete(Class<?> aClass, String where) throws SQLException {
+        String tableName = getTableName(aClass);
+        String query = String.format("DELETE FROM %s WHERE %s",
+                tableName,
+                where);
+
+        return connection.prepareStatement(query).executeUpdate();
+    }
+
+    public List<String> getTableColumnNames(String tableName) throws SQLException {
+        String query = String.format("SELECT COLUMN_NAME FROM information_schema.`COLUMNS` WHERE TABLE_NAME  = '%s' ;"
+                , tableName);
+        ResultSet resultSet = connection.prepareStatement(query).executeQuery();
+        List<String> columnNames = new ArrayList<>();
+        while (resultSet.next()) {
+            columnNames.add(resultSet.getString("COLUMN_NAME"));
+        }
+
+
+        return columnNames;
+    }
+
+    private String getAllFieldsAndDataTypesWithoutId(Class<?> aClass) {
+        List<String> fields = new ArrayList<>();
+        for (Field field : aClass.getDeclaredFields()) {
+            if(field.getAnnotationsByType(Id.class).length != 0) {
+                continue;
+            }
+            fields.add(field.getAnnotation(Column.class).name() + " " + parseVariableType(field.getType()));
+
+        }
+
+        return String.join(", ", fields);
+    }
+
+    private String parseVariableType(Class<?> type) {
+        if(type == String.class) {
+            return "VARCHAR(255)";
+        } else if (type == int.class || type == Integer.class) {
+            return "INT";
+        } else if (type == LocalDate.class) {
+            return "DATE";
+        } else if (type == long.class || type == Long.class) {
+            return "BIGINT";
+        } else {
+            return null;
+        }
     }
 
     private String[] getColumnsValuesWithoutId(E entity) throws IllegalAccessException {
@@ -185,7 +277,7 @@ public class EntityManager<E> implements DbContext<E> {
         return formattedValues.toArray(String[]::new);
     }
 
-    private String[] getColumnsWithoutId(Class<?> aClass) {
+    private String[] getColumnNamesWithoutId(Class<?> aClass) {
         return Arrays.stream(aClass.getDeclaredFields())
                 .filter(f -> f.getAnnotationsByType(Id.class).length == 0)
                 .filter(f -> f.isAnnotationPresent(Column.class))
