@@ -113,13 +113,6 @@ public class EntityManager<E> implements DbContext<E> {
         }
     }
 
-    private Field getIdColumn(Class<?> aClass) {
-        return Arrays.stream(aClass.getDeclaredFields())
-                .filter(f -> f.isAnnotationPresent(Id.class))
-                .findFirst()
-                .orElseThrow(() -> new UnsupportedOperationException("Entity missing an Id column"));
-    }
-
 
     private int doInsert(E entity) throws IllegalAccessException, SQLException {
         String tableName = getTableName(entity.getClass());
@@ -209,6 +202,20 @@ public class EntityManager<E> implements DbContext<E> {
         return connection.prepareStatement(query).executeUpdate();
     }
 
+    private Field getIdColumn(Class<?> aClass) {
+        return Arrays.stream(aClass.getDeclaredFields())
+                .filter(f -> f.isAnnotationPresent(Id.class))
+                .findFirst()
+                .orElseThrow(() -> new UnsupportedOperationException("Entity missing an Id column"));
+    }
+
+    private String getIdColumnName(E entity) {
+        return Arrays.stream(entity.getClass().getDeclaredFields())
+                .filter(f -> f.getAnnotationsByType(Id.class).length == 1)
+                .map(f -> f.getAnnotationsByType(Column.class)[0])
+                .toArray(Column[]::new)[0].name();
+    }
+
     public List<String> getTableColumnNames(String tableName) throws SQLException {
         String query = String.format("SELECT COLUMN_NAME FROM information_schema.`COLUMNS` WHERE TABLE_NAME  = '%s' ;"
                 , tableName);
@@ -235,20 +242,6 @@ public class EntityManager<E> implements DbContext<E> {
         return String.join(", ", fields);
     }
 
-    private String parseVariableType(Class<?> type) {
-        if(type == String.class) {
-            return "VARCHAR(255)";
-        } else if (type == int.class || type == Integer.class) {
-            return "INT";
-        } else if (type == LocalDate.class) {
-            return "DATE";
-        } else if (type == long.class || type == Long.class) {
-            return "BIGINT";
-        } else {
-            return null;
-        }
-    }
-
     private String[] getColumnsValuesWithoutId(E entity) throws IllegalAccessException {
         List<Object> values = new ArrayList<>();
         for (Field field : entity.getClass().getDeclaredFields()) {
@@ -261,20 +254,6 @@ public class EntityManager<E> implements DbContext<E> {
         }
 
         return formatValues(values);
-    }
-
-    private String[] formatValues(List<Object> values) {
-        List<String> formattedValues = new ArrayList<>();
-        for (int i = 0; i < values.size(); i++) {
-            Object value = values.get(i);
-            if(value instanceof LocalDate || value instanceof String) {
-                formattedValues.add("'" + value +  "'");
-            }else {
-                formattedValues.add(value.toString());
-            }
-        }
-
-        return formattedValues.toArray(String[]::new);
     }
 
     private String[] getColumnNamesWithoutId(Class<?> aClass) {
@@ -296,10 +275,31 @@ public class EntityManager<E> implements DbContext<E> {
         return annotationsByType[0].name();
     }
 
-    private String getIdColumnName(E entity) {
-        return Arrays.stream(entity.getClass().getDeclaredFields())
-                .filter(f -> f.getAnnotationsByType(Id.class).length == 1)
-                .map(f -> f.getAnnotationsByType(Column.class)[0])
-                .toArray(Column[]::new)[0].name();
+    private String parseVariableType(Class<?> type) {
+        if(type == String.class) {
+            return "VARCHAR(255)";
+        } else if (type == int.class || type == Integer.class) {
+            return "INT";
+        } else if (type == LocalDate.class) {
+            return "DATE";
+        } else if (type == long.class || type == Long.class) {
+            return "BIGINT";
+        } else {
+            return null;
+        }
+    }
+
+    private String[] formatValues(List<Object> values) {
+        List<String> formattedValues = new ArrayList<>();
+        for (int i = 0; i < values.size(); i++) {
+            Object value = values.get(i);
+            if(value instanceof LocalDate || value instanceof String) {
+                formattedValues.add("'" + value +  "'");
+            }else {
+                formattedValues.add(value.toString());
+            }
+        }
+
+        return formattedValues.toArray(String[]::new);
     }
 }
