@@ -3,6 +3,7 @@ import entities.Employee;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class _04_EmployeesWithSalaryOver50000 {
@@ -19,6 +20,7 @@ public class _04_EmployeesWithSalaryOver50000 {
         for (String employeeName : employeeNames) {
             System.out.println(employeeName);
         }
+
 
         entityManager.getTransaction().commit();
         entityManager.close();
