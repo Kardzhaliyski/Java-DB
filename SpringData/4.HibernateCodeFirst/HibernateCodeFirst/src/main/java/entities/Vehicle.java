@@ -4,16 +4,18 @@ package entities;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Entity(name = "vehicles")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn
 public abstract class Vehicle {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String type;
     private String model;
     private BigDecimal price;
+    @Column(name = "fuel_type")
     private String fuelType;
 
     protected Vehicle() {}
