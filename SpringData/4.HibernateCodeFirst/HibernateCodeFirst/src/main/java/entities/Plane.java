@@ -1,15 +1,18 @@
 package entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity(name = "planes")
 public class Plane extends Vehicle {
     public static final String VEHICLE_TYPE = "Plane";
-    String airline;
+    private String airline;
     @Column(name = "passenger_capacity")
-     int passengerCapacity;
+    private int passengerCapacity;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id",referencedColumnName = "id")
+    private Company company;
 
     protected Plane() {
     }
@@ -24,7 +27,7 @@ public class Plane extends Vehicle {
         return airline;
     }
 
-    public void setAirline(String airline) {
+    private void setAirline(String airline) {
         this.airline = airline;
     }
 
@@ -32,7 +35,15 @@ public class Plane extends Vehicle {
         return passengerCapacity;
     }
 
-    public void setPassengerCapacity(int passengerCapacity) {
+    private void setPassengerCapacity(int passengerCapacity) {
         this.passengerCapacity = passengerCapacity;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

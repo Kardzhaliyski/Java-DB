@@ -11,12 +11,11 @@ public class Main {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 
-        PlateNumber plateNumber = new PlateNumber("number12341");
-        Car vehicle = new Car("Balkanche", BigDecimal.valueOf(1300),  "Electricity",3, plateNumber);
-        plateNumber.setCar(vehicle);
-        entityManager.persist(plateNumber);
-        entityManager.persist(vehicle);
-
+        Company company = new Company("Tesla");
+        Plane plane = new Plane("f13", BigDecimal.valueOf(375.52), "Oil", "Fonta", 735);
+        plane.setCompany(company);
+        entityManager.persist(company);
+        entityManager.persist(plane);
 
         entityManager.getTransaction().commit();
         entityManager.close();
