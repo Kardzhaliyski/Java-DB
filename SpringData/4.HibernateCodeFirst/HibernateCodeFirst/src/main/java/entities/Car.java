@@ -3,7 +3,7 @@ package entities;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Entity(name = "cars")
+@Entity
 public class Car extends Vehicle{
     public static final String VEHICLE_TYPE = "Car";
 

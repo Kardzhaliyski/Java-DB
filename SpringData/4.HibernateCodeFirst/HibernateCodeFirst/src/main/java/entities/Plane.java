@@ -3,7 +3,7 @@ package entities;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Entity(name = "planes")
+@Entity
 public class Plane extends Vehicle {
     public static final String VEHICLE_TYPE = "Plane";
     private String airline;
@@ -11,7 +11,7 @@ public class Plane extends Vehicle {
     private int passengerCapacity;
 
     @ManyToOne
-    @JoinColumn(name = "company_id",referencedColumnName = "id")
+//    @JoinColumn(name = "company_id",referencedColumnName = "id")
     private Company company;
 
     protected Plane() {

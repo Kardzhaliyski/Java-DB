@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Set;
 
-@Entity(name = "trucks")
+@Entity
 public class Truck extends Vehicle{
     public static final String VEHICLE_TYPE = "Truck";
     @Column(name = "load_capacity")

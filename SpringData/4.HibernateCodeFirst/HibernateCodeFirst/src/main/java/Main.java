@@ -6,16 +6,18 @@ import javax.persistence.Persistence;
 import java.math.BigDecimal;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args )  {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("jpa-relate");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 
-        Company company = new Company("Tesla");
-        Plane plane = new Plane("f13", BigDecimal.valueOf(375.52), "Oil", "Fonta", 735);
-        plane.setCompany(company);
-        entityManager.persist(company);
-        entityManager.persist(plane);
+        PlateNumber plateNumber = new PlateNumber("12534d");
+        Vehicle vehicle = new Car("f13", BigDecimal.valueOf(375.52), "Oil", 5, plateNumber);
+
+        entityManager.persist(plateNumber);
+        entityManager.persist(vehicle);
+
+        
 
         entityManager.getTransaction().commit();
         entityManager.close();

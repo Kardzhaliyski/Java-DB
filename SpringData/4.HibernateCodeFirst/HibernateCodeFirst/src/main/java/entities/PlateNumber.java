@@ -19,7 +19,7 @@ public class PlateNumber {
 
     String planeNumber;
 
-    @OneToOne(mappedBy = "plateNumber")
+    @OneToOne(mappedBy = "plateNumber", targetEntity = Car.class)
     private Car car;
 
     public Car getCar() {
