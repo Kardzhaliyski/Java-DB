@@ -22,13 +22,71 @@ public class Visit {
     protected Visit() {
     }
 
-    public Visit(Diagnose diagnose, Prescription prescription, String comment, Patient patient) {
-        this.diagnose = diagnose;
-        this.prescription = prescription;
+    public Visit(Diagnose diagnose, Prescription prescription, Patient patient) {
+        setDiagnose(diagnose);
+        setPrescription(prescription);
         this.date = LocalDate.now();
-        this.comment = comment;
-        this.patient = patient;
+        setPatient(patient);
     }
 
-    //todo: getters and setters with validations
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Diagnose getDiagnose() {
+        return diagnose;
+    }
+
+    private void setDiagnose(Diagnose diagnose) {
+        if(diagnose == null) {
+            throw new IllegalArgumentException("Diagnose must not be null!");
+        }
+        this.diagnose = diagnose;
+    }
+
+    public Prescription getPrescription() {
+        return prescription;
+    }
+
+    private void setPrescription(Prescription prescription) {
+        if(prescription == null) {
+            throw  new IllegalArgumentException("Prescription must not be null!");
+        }
+        this.prescription = prescription;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    private void setDate(LocalDate date) {
+        if(date == null || date.isAfter(LocalDate.now())){
+            throw new IllegalArgumentException("Date must be valid!");
+        }
+        this.date = date;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    private Patient getPatient() {
+        return patient;
+    }
+
+    private void setPatient(Patient patient) {
+        if(patient == null) {
+            throw new IllegalArgumentException("Patient must not be null!");
+        }
+
+        this.patient = patient;
+    }
 }
