@@ -30,10 +30,10 @@ public class Patient {
 
     public Patient(String firstName, String lastName, String address, String email, LocalDate dateOfBirth, boolean insured) {
         setFirstName(firstName);
-        this.lastName = lastName;
-        this.address = address;
-        this.email = email;
-        this.dateOfBirth = dateOfBirth;
+        setLastName(lastName);
+        setAddress(address);
+        setEmail(email);
+        setDateOfBirth(dateOfBirth);
         this.insured = insured;
         this.visits = new ArrayList<>();
     }

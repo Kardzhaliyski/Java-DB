@@ -18,7 +18,7 @@ public class Medication {
 
     public Medication(String name, double quantity) {
         setName(name);
-        this.quantity = quantity;
+        setQuantity(quantity);
     }
 
     public Long getId() {

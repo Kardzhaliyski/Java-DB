@@ -17,13 +17,10 @@ public class Prescription {
     @OneToOne(mappedBy = "prescription")
     private Visit visit;
 
-    protected Prescription() {
+    public Prescription() {
+        this.medications = new HashSet<>();
     }
 
-    public Prescription(Visit visit) {
-       setVisit(visit);
-       this.medications = new HashSet<>();
-    }
 
     public Long getId() {
         return id;
