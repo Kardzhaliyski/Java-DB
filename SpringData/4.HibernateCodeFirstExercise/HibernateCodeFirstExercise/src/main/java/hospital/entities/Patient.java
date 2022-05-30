@@ -117,9 +117,6 @@ public class Patient {
         this.insured = !this.insured;
     }
 
-    //todo: show visits
-    //todo: show specific visit
-
     public void addVisit(Visit visit) {
         if (!visits.contains(visit)) {
             visits.add(visit);

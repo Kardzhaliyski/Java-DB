@@ -16,19 +16,19 @@ public class Main {
         entityManager.getTransaction().begin();
 
         Patient patient = new Patient(
-                "Gosho",
-                "Peshov",
+                "Dosko",
+                "Poskov",
                 "Plovdiv",
-                "Gosho@Peshev.com",
-                LocalDate.of(1994,05,06),
+                "Dos@Poskov.com",
+                LocalDate.of(1991,01,11),
                 true);
         entityManager.persist(patient);
         List<Medication> medications = new ArrayList<>();
-        medications.add(new Medication("Lorem", 10));
-        medications.add(new Medication("Ipsum", 15));
-        medications.add(new Medication("Test", 3.5));
+        medications.add(new Medication("Hen", 10));
+        medications.add(new Medication("Ban", 15));
+        medications.add(new Medication("Gassa", 3.5));
         medications.forEach(entityManager::persist);
-        Diagnose diagnose = new Diagnose("Covid-23");
+        Diagnose diagnose = new Diagnose("Ashrw");
         entityManager.persist(diagnose);
         Prescription prescription = new Prescription();
         medications.forEach(prescription::addMedication);
