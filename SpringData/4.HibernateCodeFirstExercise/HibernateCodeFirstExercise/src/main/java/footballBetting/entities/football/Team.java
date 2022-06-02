@@ -2,8 +2,8 @@ package footballBetting.entities.football;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "teams")
+@Entity(name = "teams")
+
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

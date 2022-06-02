@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity(name = "bets")
+
 public class Bet {
 
     @Id

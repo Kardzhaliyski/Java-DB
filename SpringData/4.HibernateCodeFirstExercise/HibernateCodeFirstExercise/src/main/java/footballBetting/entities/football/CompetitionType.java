@@ -2,19 +2,19 @@ package footballBetting.entities.football;
 
 import javax.persistence.*;
 
-@Entity(name = "round")
-
-public class Round {
+@Entity(name = "competition_type")
+public class CompetitionType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     private String name;
 
-    protected Round() {
+    protected CompetitionType() {
     }
 
-    public Round(String name) {
+    public CompetitionType(String name) {
         this.name = name;
     }
 

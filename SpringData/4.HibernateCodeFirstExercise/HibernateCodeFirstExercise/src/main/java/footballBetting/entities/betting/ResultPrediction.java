@@ -5,6 +5,7 @@ import footballBetting.entities.betting.enums.Prediction;
 import javax.persistence.*;
 
 @Entity(name = "result_prediction")
+
 public class ResultPrediction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
