@@ -19,7 +19,7 @@ public class WizardDeposits {
     @Column(name = "last_name", length = 60, nullable = false)
     private String lastName;
 
-    @Column( length = 1000)
+    @Column(length = 1000)
     private String notes;
 
     @Column(nullable = false)
@@ -50,7 +50,7 @@ public class WizardDeposits {
     private LocalDateTime depositExpirationDate;
 
     @Column(name = "is_deposit_expired")
-    private boolean isDepositExpired;
+    private boolean depositExpired;
 
     protected WizardDeposits() {
     }
@@ -160,11 +160,11 @@ public class WizardDeposits {
     }
 
     public boolean isDepositExpired() {
-        return isDepositExpired;
+        return depositExpired;
     }
 
     public void setDepositExpired(boolean depositExpired) {
-        isDepositExpired = depositExpired;
+        this.depositExpired = depositExpired;
     }
 
     @Override

@@ -10,19 +10,18 @@ public class Sale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(targetEntity = Product.class)
+    @ManyToOne
     @JoinColumn(name = "product_id",referencedColumnName = "id",nullable = false)
     private Product product;
 
 
-    @ManyToOne(targetEntity = Customer.class)
+    @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id",nullable = false)
     private Customer customer;
 
-    @ManyToOne(targetEntity = StoreLocation.class)
+    @ManyToOne
     @JoinColumn(name = "store_location_id", referencedColumnName = "id",nullable = false)
-    private StoreLocation storeLocation;
-
+    private StoreLocation storeLocation; 
     @Column
     LocalDate date;
 
