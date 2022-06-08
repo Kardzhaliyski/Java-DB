@@ -1,4 +1,4 @@
-package models;
+package com.example.springdataintro.models;
 
 import javax.persistence.*;
 import java.util.Collections;
@@ -17,16 +17,16 @@ public class User {
     private int age;
 
     @OneToMany(mappedBy = "user")
-    private Set<Account> accoounts;
+    private Set<Account> accounts;
 
     protected User() {
-        this.accoounts = new HashSet<>();
+        this.accounts = new HashSet<>();
     }
 
     public User(String username, int age) {
         this.username = username;
         this.age = age;
-        this.accoounts = new HashSet<>();
+        this.accounts = new HashSet<>();
     }
 
     public Long getId() {
@@ -53,11 +53,11 @@ public class User {
         this.age = age;
     }
 
-    public Set<Account> getAccoounts() {
-        return Collections.unmodifiableSet(accoounts);
+    public Set<Account> getAccounts() {
+        return Collections.unmodifiableSet(accounts);
     }
 
     public void addAccount(Account account) {
-        this.accoounts.add(account);
+        this.accounts.add(account);
     }
 }
