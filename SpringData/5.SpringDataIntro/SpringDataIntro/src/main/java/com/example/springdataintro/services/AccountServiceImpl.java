@@ -45,7 +45,7 @@ public class AccountServiceImpl implements AccountService {
         }
 
         account.setBalance(balance.subtract(withdrawAmount));
-        accountRepository.save(account);
+//        accountRepository.save(account);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class AccountServiceImpl implements AccountService {
 
 
         account.setBalance(account.getBalance().add(depositAmount));
-        accountRepository.save(account);
+//        accountRepository.save(account);
     }
 
     @Override

@@ -7,10 +7,12 @@ import com.example.springdataintro.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
 @Component
+@Transactional
 public class ConsoleRunner implements CommandLineRunner {
 
     private UserService userService;
