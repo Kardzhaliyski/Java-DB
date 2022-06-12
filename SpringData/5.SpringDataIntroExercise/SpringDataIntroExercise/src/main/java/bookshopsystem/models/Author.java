@@ -66,4 +66,13 @@ public class Author {
     public void addBook(Book book) {
         books.add(book);
     }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 }
