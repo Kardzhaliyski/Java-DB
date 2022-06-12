@@ -31,8 +31,11 @@ public class ConsoleRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args)  {
-        System.out.println(authorService.getAuthorsWithBooksReleasedBefore(1988));
+//        System.out.println(authorService.getAuthorsWithBooksReleasedBefore(1988));
 //        bookService.getBooksReleasedAfter(2000).forEach(b -> System.out.println(b.getTitle() + " - " + b.getReleaseDate()));
-
+        authorService.getAllOrderedByBooksCount().forEach(a -> System.out.printf("%s %s %n", a.getFirstName(), a.getLastName()));
+//        authorService.getAllOrderedByBooksCount().forEach(author -> {
+//            System.out.println(author.getBooks());
+//        });
     }
 }

@@ -60,5 +60,8 @@ public class AuthorServiceImpl implements AuthorService {
         return authorRepository.findAllByBooksReleaseDateBefore(LocalDate.of(year, 1, 1));
     }
 
+    public List<Author> getAllOrderedByBooksCount() {
+        return authorRepository.findAllOrderedByBooksCount();
+    }
 
 }

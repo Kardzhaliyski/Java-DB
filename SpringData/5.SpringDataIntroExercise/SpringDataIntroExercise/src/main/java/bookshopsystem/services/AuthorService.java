@@ -11,5 +11,6 @@ public interface AuthorService {
     Author getRandomAuthor();
     void seedDatabase(Path path) throws IOException;
     List<Author> getAuthorsWithBooksReleasedBefore(int year);
+    List<Author> getAllOrderedByBooksCount();
 
 }
