@@ -1,12 +1,12 @@
 package bookshopsystem.services;
 
-import bookshopsystem.models.Book;
+import bookshopsystem.models.Category;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.time.LocalDate;
+import java.util.Set;
 
-public interface BookService {
+public interface CategoryService {
     void seedDatabase(Path path) throws IOException;
-    Book[] getBooksReleasedAfter(LocalDate date);
+    Set<Category> getRandomCategories();
 }

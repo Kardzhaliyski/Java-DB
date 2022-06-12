@@ -1,7 +1,8 @@
 package bookshopsystem;
 
 import bookshopsystem.services.AuthorService;
-import bookshopsystem.services.AuthorServiceImpl;
+import bookshopsystem.services.BookService;
+import bookshopsystem.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -17,19 +18,18 @@ public class ConsoleRunner implements CommandLineRunner {
 
 
     AuthorService authorService;
+    CategoryService categoryService;
+    BookService bookService;
 
     @Autowired
-    public ConsoleRunner(AuthorService authorService) {
+    public ConsoleRunner(AuthorService authorService, CategoryService categoryService, BookService bookService) {
         this.authorService = authorService;
+        this.categoryService = categoryService;
+        this.bookService = bookService;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println(authorService.getRandomAuthor());
-//        authorService.seedDatabase(Path.of(RESOURCE_PATH + AUTHORS_FILE_NAME));
+        bookService.seedDatabase(Path.of(RESOURCE_PATH + BOOKS_FILE_NAME));
     }
-
-
-//        System.out.println(p1.toAbsolutePath());
-//        System.out.println(Paths.get("/mnt/plex/Archive/Git/Java-DB/SpringData/5.SpringDataIntroExercise/SpringDataIntroExercise/resources/books.txt").toAbsolutePath());
 }

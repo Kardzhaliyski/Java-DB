@@ -44,10 +44,10 @@ public class Book {
     private Author author;
 
     @ManyToMany
-    private Set<Category> categiries;
+    private Set<Category> categories;
 
     protected Book() {
-        this.categiries = new HashSet<>();
+        this.categories = new HashSet<>();
     }
 
     public Book(String title, EditionType editionType, BigDecimal price, int copies, AgeRestriction ageRestriction, Author author) {
@@ -57,7 +57,14 @@ public class Book {
         this.copies = copies;
         this.ageRestriction = ageRestriction;
         this.author = author;
-        this.categiries = new HashSet<>();
+        this.categories = new HashSet<>();
+    }
+
+    public Book(String title, String description, EditionType editionType, BigDecimal price, int copies, LocalDate releaseDate, AgeRestriction ageRestriction, Author author, Set<Category> categories) {
+        this(title, editionType, price, copies, ageRestriction, author);
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.categories = categories;
     }
 
     public Long getId() {
@@ -132,17 +139,17 @@ public class Book {
         this.author = author;
     }
 
-    public Set<Category> getCategiries() {
-        return Collections.unmodifiableSet(categiries);
+    public Set<Category> getCategories() {
+        return Collections.unmodifiableSet(categories);
     }
 
-    private void setCategiries(Set<Category> categiries) {
-        this.categiries = categiries;
+    private void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 
     public void addCategirie (Category category) {
         if(category != null){
-            categiries.add(category);
+            categories.add(category);
         } else {
             throw new IllegalArgumentException("Category should not be null!");
         }

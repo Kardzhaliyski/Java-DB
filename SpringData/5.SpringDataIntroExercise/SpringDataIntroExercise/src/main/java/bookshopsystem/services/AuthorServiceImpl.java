@@ -26,7 +26,7 @@ public class AuthorServiceImpl implements AuthorService {
         int randomAuthorNumber = (int) (Math.random() * authorCount);
         Page<Author> authorPage = authorRepository.findAll(PageRequest.of(randomAuthorNumber, 1));
 
-        if(authorPage.hasContent()) {
+        if (authorPage.hasContent()) {
             return authorPage.getContent().get(0);
         }
 

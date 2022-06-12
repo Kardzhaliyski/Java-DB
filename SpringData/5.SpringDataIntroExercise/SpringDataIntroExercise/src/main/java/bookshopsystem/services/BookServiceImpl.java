@@ -1,9 +1,12 @@
 package bookshopsystem.services;
 
 import bookshopsystem.models.Author;
+import bookshopsystem.models.Book;
 import bookshopsystem.models.Category;
 import bookshopsystem.models.enums.AgeRestriction;
 import bookshopsystem.models.enums.EditionType;
+import bookshopsystem.repositories.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,15 +18,25 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 @Service
 public class BookServiceImpl implements BookService {
 
+    private AuthorService authorService;
+    private CategoryService categoryService;
+    private BookRepository bookRepository;
+
+    @Autowired
+    public BookServiceImpl(AuthorService authorService, CategoryService categoryService, BookRepository bookRepository) {
+        this.authorService = authorService;
+        this.categoryService = categoryService;
+        this.bookRepository = bookRepository;
+    }
 
     @Override
     public void seedDatabase(Path path) throws IOException {
-//        Path path = Path.of(resourcePath + fileName);
         Files.readAllLines(path).forEach(line -> {
-//            Author author = AuthorServiceImpl.getRandomAuthor();
+            Author author = authorService.getRandomAuthor();
             String[] data = line.split(" ");
             EditionType editionType = EditionType.values()[Integer.parseInt(data[0])];
             LocalDate releaseDate = LocalDate.parse(data[1], DateTimeFormatter.ofPattern("d/M/yyyy"));
@@ -33,8 +46,22 @@ public class BookServiceImpl implements BookService {
             String title = Arrays.stream(data)
                     .skip(5)
                     .collect(Collectors.joining(" "));
-            Set<Category> categories;
-            System.out.println(line);
+            Set<Category> categories = categoryService.getRandomCategories();
+
+            Book book = new Book(
+                    title,
+                    null,
+                    editionType,
+                    price,
+                    copies,
+                    releaseDate,
+                    ageRestriction,
+                    author,
+                    categories);
+
+            bookRepository.save(book);
         });
+
+        Book[] getBooksReleasedAfter(LocalDate date);
     }
 }
