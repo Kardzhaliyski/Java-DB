@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -52,4 +54,11 @@ public class AuthorServiceImpl implements AuthorService {
             authorRepository.save(author);
         });
     }
+
+    @Override
+    public List<Author> getAuthorsWithBooksReleasedBefore(int year) {
+        return authorRepository.findAllByBooksReleaseDateBefore(LocalDate.of(year, 1, 1));
+    }
+
+
 }

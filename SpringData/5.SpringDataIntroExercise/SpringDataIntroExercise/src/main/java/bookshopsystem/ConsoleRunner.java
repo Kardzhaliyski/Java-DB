@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 
 @Component
 public class ConsoleRunner implements CommandLineRunner {
@@ -29,7 +30,9 @@ public class ConsoleRunner implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
-        bookService.seedDatabase(Path.of(RESOURCE_PATH + BOOKS_FILE_NAME));
+    public void run(String... args)  {
+        System.out.println(authorService.getAuthorsWithBooksReleasedBefore(1988));
+//        bookService.getBooksReleasedAfter(2000).forEach(b -> System.out.println(b.getTitle() + " - " + b.getReleaseDate()));
+
     }
 }
