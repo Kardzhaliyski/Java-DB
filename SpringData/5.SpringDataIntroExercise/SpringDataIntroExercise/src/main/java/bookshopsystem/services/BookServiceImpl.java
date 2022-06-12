@@ -70,4 +70,9 @@ public class BookServiceImpl implements BookService {
     public List<Book> getBooksReleasedAfter(int year) {
         return  bookRepository.findBooksByReleaseDateAfter(LocalDate.of(year, 1, 1));
     }
+
+    @Override
+    public List<Book> getBooksFrom(String firstName, String lastName) {
+        return bookRepository.findAllByAuthorFirstNameAndAuthorLastNameOrderByReleaseDateDescTitleAsc(firstName, lastName);
+    }
 }

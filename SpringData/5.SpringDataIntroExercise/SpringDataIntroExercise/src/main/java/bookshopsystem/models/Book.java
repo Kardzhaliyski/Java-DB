@@ -154,4 +154,13 @@ public class Book {
             throw new IllegalArgumentException("Category should not be null!");
         }
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "title='" + title + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", copies=" + copies +
+                '}';
+    }
 }
