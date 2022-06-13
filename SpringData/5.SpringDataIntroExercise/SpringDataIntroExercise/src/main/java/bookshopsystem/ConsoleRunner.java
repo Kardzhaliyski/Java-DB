@@ -33,7 +33,7 @@ public class ConsoleRunner implements CommandLineRunner {
     public void run(String... args) {
 //        System.out.println(authorService.getAuthorsWithBooksReleasedBefore(1988));
 //        bookService.getBooksReleasedAfter(2000).forEach(b -> System.out.println(b.getTitle() + " - " + b.getReleaseDate()));
-//        authorService.getAllOrderedByBooksCount().forEach(a -> System.out.printf("%s %s %n", a.getFirstName(), a.getLastName()));
-        bookService.getBooksFrom("George", "Powell").forEach(System.out::println);
+        authorService.getAllOrderedByBooksCount().forEach(a -> System.out.printf("%s %s %n", a.getFirstName(), a.getLastName()));
+//        bookService.getBooksFrom("George", "Powell").forEach(System.out::println);
     }
 }
