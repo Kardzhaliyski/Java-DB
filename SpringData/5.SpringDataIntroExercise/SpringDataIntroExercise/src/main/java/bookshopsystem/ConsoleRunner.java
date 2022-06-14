@@ -1,14 +1,13 @@
 package bookshopsystem;
 
+import bookshopsystem.models.user.User;
+import bookshopsystem.repositories.user.UserRepository;
 import bookshopsystem.services.AuthorService;
 import bookshopsystem.services.BookService;
 import bookshopsystem.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.nio.file.Path;
-import java.time.LocalDate;
 
 @Component
 public class ConsoleRunner implements CommandLineRunner {
@@ -21,19 +20,19 @@ public class ConsoleRunner implements CommandLineRunner {
     AuthorService authorService;
     CategoryService categoryService;
     BookService bookService;
+    UserRepository userRepository;
 
     @Autowired
-    public ConsoleRunner(AuthorService authorService, CategoryService categoryService, BookService bookService) {
+    public ConsoleRunner(AuthorService authorService, CategoryService categoryService, BookService bookService, UserRepository userRepository) {
         this.authorService = authorService;
         this.categoryService = categoryService;
         this.bookService = bookService;
+        this.userRepository = userRepository;
     }
 
     @Override
     public void run(String... args) {
-//        System.out.println(authorService.getAuthorsWithBooksReleasedBefore(1988));
-//        bookService.getBooksReleasedAfter(2000).forEach(b -> System.out.println(b.getTitle() + " - " + b.getReleaseDate()));
-        authorService.getAllOrderedByBooksCount().forEach(a -> System.out.printf("%s %s %n", a.getFirstName(), a.getLastName()));
-//        bookService.getBooksFrom("George", "Powell").forEach(System.out::println);
+        User user = new User("Pesho", "@Zzzzs4t9o", "Pesho@gmail.com", 23);
+
     }
 }

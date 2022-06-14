@@ -1,7 +1,7 @@
 package bookshopsystem.services;
 
-import bookshopsystem.models.Author;
-import bookshopsystem.repositories.AuthorRepository;
+import bookshopsystem.models.bookshop.Author;
+import bookshopsystem.repositories.bookshop.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

@@ -1,14 +1,16 @@
-package usersystem.models;
+package bookshopsystem.models.user;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Column(nullable = false, unique = true)
     private String username;
     @Column(nullable = false, length = 50)
@@ -23,15 +25,39 @@ public class User {
     private int age;
     @Column(name = "is_deleted")
     private boolean isDeleted;
+    @ManyToOne
+    private Town townOfBirth;
+    @ManyToOne
+    private Town townOfResidance;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
+    @Transient
+    private String fullName;
+    @ManyToMany
+    private Set<User> friends;
 
     protected User() {
+        friends = new HashSet<>();
     }
 
-    public int getId() {
+    public User(String username, String password, String email, int age) {
+        this();
+        setUsername(username);
+        setPassword(password);
+        setEmail(email);
+        setAge(age);
+        setRegistrationDate(LocalDate.now());
+        setLastLoginDateTime(LocalDateTime.now());
+        setDeleted(false);
+    }
+
+    public long getId() {
         return id;
     }
 
-    private void setId(int id) {
+    private void setId(long id) {
         this.id = id;
     }
 
@@ -40,11 +66,11 @@ public class User {
     }
 
     private void setUsername(String username) {
-        if(!username.matches("^[A-Za-z+]+$")) {
+        if (!username.matches("^[A-Za-z+]+$")) {
             throw new IllegalArgumentException("Username should contains only letters! For username: " + username);
         }
 
-        if(username.length() < 4 || username.length() > 30) {
+        if (username.length() < 4 || username.length() > 30) {
             throw new IllegalArgumentException("Username should be between 4 and 30 symbols! For username: " + username);
         }
 
@@ -56,11 +82,11 @@ public class User {
     }
 
     private void setPassword(String password) {
-        if(password.length() < 6 || password.length() > 50) {
+        if (password.length() < 6 || password.length() > 50) {
             throw new IllegalArgumentException("Password length must be between 6 and 50 symbols! For password: " + password);
         }
         String passwordValidatingRegex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*?[!@#$%^&*()_+<>?])[A-Za-z\\d!@#$%^&*()_+<>?]{6,50}$";
-        if(!password.matches(passwordValidatingRegex)) {
+        if (!password.matches(passwordValidatingRegex)) {
             throw new IllegalArgumentException("Password must contain at least 1 Upper case letter, 1 Lower case letter, 1 Number , 1 Special symbol(!, @, #, $, %, ^, &, *, (, ), _, +, <, >, ?)! For password: " + password);
         }
         this.password = password;
@@ -72,7 +98,7 @@ public class User {
 
     private void setEmail(String email) {
         String emailValidatingRegex = "^(?:[a-zA-Z0-9]+(?:[._-][a-zA-Z0-9]+)*)@(?:[a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*\\.[a-zA-Z]{2,})$";
-        if(!email.matches(emailValidatingRegex)) {
+        if (!email.matches(emailValidatingRegex)) {
             throw new IllegalArgumentException("Invalid email! For: " + email);
         }
 
@@ -100,6 +126,9 @@ public class User {
     }
 
     private void setAge(int age) {
+        if (age < 1 || age > 120) {
+            throw new IllegalArgumentException("Age should be in the range between 1 and 120! For age: " + age);
+        }
         this.age = age;
     }
 
@@ -109,5 +138,47 @@ public class User {
 
     private void setDeleted(boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public Town getTownOfBirth() {
+        return townOfBirth;
+    }
+
+    private void setTownOfBirth(Town townOfBirth) {
+        this.townOfBirth = townOfBirth;
+    }
+
+    public Town getTownOfResidance() {
+        return townOfResidance;
+    }
+
+    private void setTownOfResidance(Town townOfResidance) {
+        this.townOfResidance = townOfResidance;
+    }
+
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    private void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    private void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFullName() {
+        if(this.fullName == null){
+            String firstName = this.firstName == null ? "" : this.firstName;
+            String lastName = this.lastName == null ? "" : this.lastName;
+            this.fullName = (firstName + " " + lastName).trim().length() == 0 ? null : (firstName + " " + lastName).trim();
+        }
+        return fullName;
     }
 }

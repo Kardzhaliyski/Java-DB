@@ -1,10 +1,9 @@
 package bookshopsystem.services;
 
-import bookshopsystem.models.Author;
+import bookshopsystem.models.bookshop.Author;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.time.LocalDate;
 import java.util.List;
 
 public interface AuthorService {

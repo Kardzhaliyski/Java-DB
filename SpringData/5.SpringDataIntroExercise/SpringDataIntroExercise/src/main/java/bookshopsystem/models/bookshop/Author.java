@@ -1,4 +1,4 @@
-package bookshopsystem.models;
+package bookshopsystem.models.bookshop;
 
 import javax.persistence.*;
 import java.util.Collections;

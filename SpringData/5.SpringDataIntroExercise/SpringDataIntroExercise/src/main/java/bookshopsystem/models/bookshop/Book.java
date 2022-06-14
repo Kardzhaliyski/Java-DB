@@ -1,7 +1,7 @@
-package bookshopsystem.models;
+package bookshopsystem.models.bookshop;
 
-import bookshopsystem.models.enums.EditionType;
-import bookshopsystem.models.enums.AgeRestriction;
+import bookshopsystem.models.bookshop.enums.EditionType;
+import bookshopsystem.models.bookshop.enums.AgeRestriction;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

@@ -1,6 +1,6 @@
-package bookshopsystem.repositories;
+package bookshopsystem.repositories.bookshop;
 
-import bookshopsystem.models.Category;
+import bookshopsystem.models.bookshop.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

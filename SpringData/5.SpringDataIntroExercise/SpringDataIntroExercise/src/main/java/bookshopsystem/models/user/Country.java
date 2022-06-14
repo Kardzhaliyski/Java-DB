@@ -1,21 +1,19 @@
-package bookshopsystem.models;
+package bookshopsystem.models.user;
 
 import javax.persistence.*;
 
-@Entity
-public class Category {
-
+@Entity(name = "countries")
+public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(nullable = false)
     private String name;
 
-    protected Category() {
+    protected Country() {
     }
 
-    public Category(String name) {
+    public Country(String name) {
         this.name = name;
     }
 
@@ -32,13 +30,9 @@ public class Category {
     }
 
     private void setName(String name) {
+        if(name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Country name should not be null or blank!");
+        }
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "Category{" +
-                "name='" + name + '\'' +
-                '}';
     }
 }

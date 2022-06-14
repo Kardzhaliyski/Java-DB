@@ -1,6 +1,6 @@
 package bookshopsystem.services;
 
-import bookshopsystem.models.Category;
+import bookshopsystem.models.bookshop.Category;
 
 import java.io.IOException;
 import java.nio.file.Path;

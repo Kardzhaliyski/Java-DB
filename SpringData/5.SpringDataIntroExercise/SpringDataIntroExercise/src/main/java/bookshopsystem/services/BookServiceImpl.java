@@ -1,11 +1,11 @@
 package bookshopsystem.services;
 
-import bookshopsystem.models.Author;
-import bookshopsystem.models.Book;
-import bookshopsystem.models.Category;
-import bookshopsystem.models.enums.AgeRestriction;
-import bookshopsystem.models.enums.EditionType;
-import bookshopsystem.repositories.BookRepository;
+import bookshopsystem.models.bookshop.Author;
+import bookshopsystem.models.bookshop.Book;
+import bookshopsystem.models.bookshop.Category;
+import bookshopsystem.models.bookshop.enums.AgeRestriction;
+import bookshopsystem.models.bookshop.enums.EditionType;
+import bookshopsystem.repositories.bookshop.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

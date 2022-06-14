@@ -1,6 +1,6 @@
 package bookshopsystem.services;
 
-import bookshopsystem.models.Book;
+import bookshopsystem.models.bookshop.Book;
 
 import java.io.IOException;
 import java.nio.file.Path;
