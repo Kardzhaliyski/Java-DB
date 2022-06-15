@@ -9,9 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 @Component
 public class ConsoleRunner implements CommandLineRunner {
-    public static final String RESOURCE_PATH = "resources/";
+    public static final String RESOURCE_PATH = "src/main/resources/files/";
     public static final String BOOKS_FILE_NAME = "books.txt";
     public static final String AUTHORS_FILE_NAME = "authors.txt";
     public static final String CATEGORIES_FILE_NAME = "categories.txt";
@@ -31,8 +34,7 @@ public class ConsoleRunner implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) {
-        User user = new User("Pesho", "@Zzzzs4t9o", "Pesho@gmail.com", 23);
-
+    public void run(String... args) throws IOException {
+        authorService.seedDatabase(Path.of(RESOURCE_PATH + AUTHORS_FILE_NAME));
     }
 }
