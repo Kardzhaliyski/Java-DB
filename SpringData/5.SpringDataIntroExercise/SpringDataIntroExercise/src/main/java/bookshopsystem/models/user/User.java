@@ -3,6 +3,7 @@ package bookshopsystem.models.user;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,6 +38,10 @@ public class User {
     private String fullName;
     @ManyToMany
     private Set<User> friends;
+    @OneToMany
+    private Set<Album> albums;
+    @OneToMany
+    private Set<Picture> pictures;
 
     protected User() {
         friends = new HashSet<>();
@@ -180,5 +185,34 @@ public class User {
             this.fullName = (firstName + " " + lastName).trim().length() == 0 ? null : (firstName + " " + lastName).trim();
         }
         return fullName;
+    }
+
+
+    public Set<User> getFriends() {
+        return Collections.unmodifiableSet(this.friends);
+    }
+
+    private void setFriends(Set<User> friends) {
+        this.friends = friends;
+    }
+
+    public Set<Album> getAlbums() {
+        return  Collections.unmodifiableSet(this.albums);
+    }
+
+    private void setAlbums(Set<Album> albums) {
+        this.albums = albums;
+    }
+
+    public Set<Picture> getPictures() {
+        return Collections.unmodifiableSet(pictures);
+    }
+
+    private void setPictures() {
+        pictures = new HashSet<>();
+    }
+
+    private void addPicture(Picture picture) {
+        pictures.add(picture);
     }
 }
