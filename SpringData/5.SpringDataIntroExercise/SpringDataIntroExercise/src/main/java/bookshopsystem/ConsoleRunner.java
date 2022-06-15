@@ -2,9 +2,9 @@ package bookshopsystem;
 
 import bookshopsystem.models.user.User;
 import bookshopsystem.repositories.user.UserRepository;
-import bookshopsystem.services.AuthorService;
-import bookshopsystem.services.BookService;
-import bookshopsystem.services.CategoryService;
+import bookshopsystem.services.bookshop.AuthorService;
+import bookshopsystem.services.bookshop.BookService;
+import bookshopsystem.services.bookshop.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

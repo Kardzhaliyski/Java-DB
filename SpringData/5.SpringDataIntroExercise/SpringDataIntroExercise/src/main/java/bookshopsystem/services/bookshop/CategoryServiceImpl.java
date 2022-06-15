@@ -1,4 +1,4 @@
-package bookshopsystem.services;
+package bookshopsystem.services.bookshop;
 
 import bookshopsystem.models.bookshop.Category;
 import bookshopsystem.repositories.bookshop.CategoryRepository;
