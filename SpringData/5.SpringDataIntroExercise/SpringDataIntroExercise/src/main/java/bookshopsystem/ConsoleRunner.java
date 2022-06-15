@@ -35,6 +35,6 @@ public class ConsoleRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws IOException {
-        authorService.seedDatabase(Path.of(RESOURCE_PATH + AUTHORS_FILE_NAME));
+        System.out.println(authorService.getAuthorsWithBooksReleasedBefore(1990).size());
     }
 }

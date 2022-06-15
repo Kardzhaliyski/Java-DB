@@ -57,7 +57,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<Author> getAuthorsWithBooksReleasedBefore(int year) {
-        return authorRepository.findAllByBooksReleaseDateBefore(LocalDate.of(year, 1, 1));
+        return authorRepository.findAllDistinctByBooksReleaseDateBefore(LocalDate.of(year, 1, 1));
     }
 
     public List<Author> getAllOrderedByBooksCount() {
