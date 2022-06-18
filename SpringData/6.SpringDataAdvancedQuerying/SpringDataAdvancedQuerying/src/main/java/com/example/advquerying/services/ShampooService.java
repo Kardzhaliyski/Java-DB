@@ -13,4 +13,5 @@ public interface ShampooService {
     List<Shampoo> getBySizeOrLabelId(Size size, Long id);
 
     List<Shampoo> getByPriceGreaterThan(BigDecimal price);
+    int getCountByPriceLessThan(BigDecimal price);
 }

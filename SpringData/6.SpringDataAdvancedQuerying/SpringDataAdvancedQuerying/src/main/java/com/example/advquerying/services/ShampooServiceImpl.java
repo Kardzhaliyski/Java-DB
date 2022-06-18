@@ -21,16 +21,21 @@ public class ShampooServiceImpl implements ShampooService {
 
     @Override
     public List<Shampoo> getBySize(Size size) {
-        return shampooRepository.getBySizeOrderByIdAsc(size);
+        return shampooRepository.findBySizeOrderByIdAsc(size);
     }
 
     @Override
     public List<Shampoo> getBySizeOrLabelId(Size size, Long id) {
-        return shampooRepository.getBySizeOrLabelIdOrderByPriceAsc(size, id);
+        return shampooRepository.findBySizeOrLabelIdOrderByPriceAsc(size, id);
     }
 
     @Override
     public List<Shampoo> getByPriceGreaterThan(BigDecimal price) {
         return shampooRepository.findByPriceGreaterThanOrderByPriceDesc(price);
+    }
+
+    @Override
+    public int getCountByPriceLessThan(BigDecimal price) {
+        return shampooRepository.countByPriceLessThan(price);
     }
 }
