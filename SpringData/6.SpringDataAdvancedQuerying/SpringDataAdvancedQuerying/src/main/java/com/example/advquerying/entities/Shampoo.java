@@ -46,8 +46,7 @@ public class Shampoo extends BaseEntity {
     }
 
     @ManyToOne(optional = true,
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL)
+            fetch = FetchType.EAGER)
     @JoinColumn(name = "label", referencedColumnName = "id")
     public Label getLabel() {
         return this.label;

@@ -58,10 +58,10 @@ public class ShampooServiceImpl implements ShampooService {
 
     @Override
     public void delete(Shampoo shampoo) {
-        Ingredient[] ingredients = shampoo.getIngredients().toArray(Ingredient[]::new);
-        for (Ingredient ingredient : ingredients) {
-            ingredient.remove(shampoo);
-        }
+//        Ingredient[] ingredients = shampoo.getIngredients().toArray(Ingredient[]::new);
+//        for (Ingredient ingredient : ingredients) {
+//            ingredient.remove(shampoo);
+//        }
         shampooRepository.delete(shampoo);
     }
 
