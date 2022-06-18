@@ -8,4 +8,7 @@ public interface IngredientService {
     List<Ingredient> getByNameStartingWith(String value);
 
     List<Ingredient> getByNames(List<String> ingredientsNames);
+    void deleteByName(String name);
+
+    void delete(Ingredient ingredient);
 }

@@ -5,10 +5,8 @@ import com.example.advquerying.services.ShampooService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class Runner implements CommandLineRunner {
@@ -21,8 +19,17 @@ public class Runner implements CommandLineRunner {
         this.ingredientService = ingredientService;
     }
 
+    @Transactional
     @Override
     public void run(String... args) throws Exception {
-        System.out.println(shampooService.getCountByPriceLessThan(BigDecimal.valueOf(8.50)));
+//        ingredientService.deleteByName("Apple");
+//        ingredientService.deleteByName("Nettle");
+        ingredientService.deleteByName("Macadamia Oil");
+//        ingredientService.deleteByName("Aloe Vera");
+//        ingredientService.deleteByName("Lavender");
+//        ingredientService.deleteByName("Herbs");
+//        ingredientService.deleteByName("Wild Rose");
+//        ingredientService.deleteByName("Micro-Crystals");
+
     }
 }

@@ -1,4 +1,5 @@
 package com.example.advquerying.entities;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Set;
@@ -44,8 +45,9 @@ public class Shampoo extends BaseEntity {
         this.size = size;
     }
 
-    @ManyToOne(optional = true, cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER)
+    @ManyToOne(optional = true,
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
     @JoinColumn(name = "label", referencedColumnName = "id")
     public Label getLabel() {
         return this.label;
@@ -55,7 +57,7 @@ public class Shampoo extends BaseEntity {
         this.label = label;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "shampoos_ingredients",
             joinColumns = @JoinColumn(name = "shampoo_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id"))
@@ -70,5 +72,21 @@ public class Shampoo extends BaseEntity {
     @Override
     public String toString() {
         return brand + " " + size + " " + price + "lv.";
+    }
+
+    public void add(Ingredient ingredient) {
+        if(!ingredients.contains(ingredient))
+        {
+            ingredients.add(ingredient);
+            ingredient.add(this);
+        }
+    }
+
+    public void remove(Ingredient ingredient) {
+        if(ingredients.contains(ingredient))
+        {
+            ingredients.remove(ingredient);
+            ingredient.remove(this);
+        }
     }
 }

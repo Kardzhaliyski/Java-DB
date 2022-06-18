@@ -14,4 +14,9 @@ public interface ShampooService {
 
     List<Shampoo> getByPriceGreaterThan(BigDecimal price);
     int getCountByPriceLessThan(BigDecimal price);
+    List<Shampoo> getAllContainingIngredients(List<String> ingredients);
+    List<Shampoo> getByIngredientsCountGreaterThan(int count);
+    List<Shampoo> getByIngredientsCountLesserThan(int count);
+
+    void delete(Shampoo shampoo);
 }
