@@ -65,4 +65,9 @@ public class ShampooServiceImpl implements ShampooService {
         shampooRepository.delete(shampoo);
     }
 
+    @Override
+    public void deleteByIngredientName(String name) {
+        shampooRepository.deleteByIngredientsName(name);
+    }
+
 }

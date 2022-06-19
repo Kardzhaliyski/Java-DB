@@ -34,8 +34,10 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public void deleteByName(String name) {
-        Ingredient ingredient = ingredientRepository.findByName(name);
-        delete(ingredient);
+        shampooService.deleteByIngredientName(name);
+        ingredientRepository.deleteIngredientByName(name);
+//        Ingredient ingredient = ingredientRepository.findByName(name);
+//        delete(ingredient);
     }
 
     @Override

@@ -24,9 +24,9 @@ public class Runner implements CommandLineRunner {
     public void run(String... args) throws Exception {
 //        ingredientService.deleteByName("Apple");
 //        ingredientService.deleteByName("Nettle");
-        ingredientService.deleteByName("Macadamia Oil");
+//        ingredientService.deleteByName("Macadamia Oil");
 //        ingredientService.deleteByName("Aloe Vera");
-//        ingredientService.deleteByName("Lavender");
+        ingredientService.deleteByName("Lavender");
 //        ingredientService.deleteByName("Herbs");
 //        ingredientService.deleteByName("Wild Rose");
 //        ingredientService.deleteByName("Micro-Crystals");

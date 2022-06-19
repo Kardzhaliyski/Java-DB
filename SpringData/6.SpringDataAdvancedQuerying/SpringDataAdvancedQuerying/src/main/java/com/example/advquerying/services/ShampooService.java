@@ -19,4 +19,6 @@ public interface ShampooService {
     List<Shampoo> getByIngredientsCountLesserThan(int count);
 
     void delete(Shampoo shampoo);
+
+    void deleteByIngredientName(String name);
 }

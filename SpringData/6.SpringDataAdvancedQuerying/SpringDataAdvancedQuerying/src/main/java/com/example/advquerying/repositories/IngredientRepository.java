@@ -2,6 +2,8 @@ package com.example.advquerying.repositories;
 
 import com.example.advquerying.entities.Ingredient;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,8 +15,8 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
 
     List<Ingredient> findByNameInOrderByPriceAsc(List<String> ingredientsNames);
 
-    int deleteByName(String name);
-//    @Modifying
-//    @Query("DELETE FROM Ingredient i WHERE i.name = :name")
-//    void deleteIngredientByName(String name);
+//    int deleteByName(String name);
+    @Modifying
+    @Query("DELETE FROM Ingredient i WHERE i.name = :name")
+    void deleteIngredientByName(String name);
 }

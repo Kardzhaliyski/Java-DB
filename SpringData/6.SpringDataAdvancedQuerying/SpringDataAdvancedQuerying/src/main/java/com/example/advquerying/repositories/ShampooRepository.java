@@ -3,6 +3,7 @@ package com.example.advquerying.repositories;
 import com.example.advquerying.entities.Shampoo;
 import com.example.advquerying.entities.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -25,4 +26,5 @@ public interface ShampooRepository extends JpaRepository<Shampoo, Long> {
     List<Shampoo> findByIngredientsCountGreaterThan(@Param("count") int count);
     @Query("SELECT s FROM Shampoo s WHERE s.ingredients.size < :count")
     List<Shampoo> findByIngredientsCountLesserThan(int count);
+    int deleteByIngredientsName(String ingredientName);
 }
