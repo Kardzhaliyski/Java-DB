@@ -7,6 +7,7 @@ import com.example.advquerying.repositories.ShampooRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -47,5 +48,10 @@ public class IngredientServiceImpl implements IngredientService {
             shampooService.delete(shampoo);
         }
         ingredientRepository.delete(ingredient);
+    }
+
+    @Override
+    public void increaseAllPricesBy(Double percentage) {
+        ingredientRepository.increaseAllPricesBy(percentage);
     }
 }

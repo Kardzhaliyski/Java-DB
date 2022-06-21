@@ -11,4 +11,6 @@ public interface IngredientService {
     void deleteByName(String name);
 
     void delete(Ingredient ingredient);
+
+    void increaseAllPricesBy(Double percentage);
 }
