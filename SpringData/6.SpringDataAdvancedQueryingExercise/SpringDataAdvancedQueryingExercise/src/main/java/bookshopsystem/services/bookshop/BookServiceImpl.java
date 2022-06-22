@@ -129,7 +129,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public int increaseCopiesOfBooksReleasedAfter(LocalDate date, int copies) {
-        return bookRepository.increaseCopiesOfBooksReleasedAfter(date, copies) * copies;
+    public int increaseCopiesOfBooksReleasedAfter(LocalDate date, int value) {
+        return bookRepository.increaseCopiesOfBooksReleasedAfter(date, value) * value;
+    }
+
+    @Override
+    public int deleteBooksByCopiesLessThan(int value) {
+        return bookRepository.deleteBooksByCopiesLessThan(value);
     }
 }

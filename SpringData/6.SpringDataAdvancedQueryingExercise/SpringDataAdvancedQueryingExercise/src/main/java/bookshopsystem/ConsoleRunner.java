@@ -40,9 +40,6 @@ public class ConsoleRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        LocalDate date = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd MMM yyyy"));
-        int copies = Integer.parseInt(scanner.nextLine());
-        int totalIncrease = bookService.increaseCopiesOfBooksReleasedAfter(date, copies);
-        System.out.println(totalIncrease);
+        System.out.println(bookService.deleteBooksByCopiesLessThan(250));
     }
 }
