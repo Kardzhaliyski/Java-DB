@@ -12,4 +12,7 @@ public interface AuthorService {
     List<Author> getAuthorsWithBooksReleasedBefore(int year);
     List<Author> getAllOrderedByBooksCount();
 
+    List<Author> getAuthorsWithFirstNameEndsWith(String value);
+
+    int getSumOfBooksCopiesFrom(Author author);
 }

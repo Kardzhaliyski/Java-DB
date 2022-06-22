@@ -1,6 +1,7 @@
 package bookshopsystem;
 
-import bookshopsystem.models.user.User;
+import bookshopsystem.models.bookshop.Author;
+import bookshopsystem.models.bookshop.Book;
 import bookshopsystem.repositories.user.UserRepository;
 import bookshopsystem.services.bookshop.AuthorService;
 import bookshopsystem.services.bookshop.BookService;
@@ -10,7 +11,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.nio.file.Path;
+import java.util.List;
+import java.util.Scanner;
 
 @Component
 public class ConsoleRunner implements CommandLineRunner {
@@ -35,6 +37,15 @@ public class ConsoleRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws IOException {
-        System.out.println(authorService.getAuthorsWithBooksReleasedBefore(1990).size());
+        Scanner scanner = new Scanner(System.in);
+//
+//        List<Book> books = bookService.getBooksByAuthorLastNameStartsWith(scanner.nextLine());
+//        books.forEach(System.out::println);
+//
+//        int bookCount = bookService.getCountOfBooksWithTitleLongerThan(12);
+//        System.out.println(bookCount);
+        Author author = authorService.getRandomAuthor();
+        int copies =  authorService.getSumOfBooksCopiesFrom(author);
+        System.out.println(copies);
     }
 }

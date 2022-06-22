@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
@@ -65,14 +66,56 @@ public class BookServiceImpl implements BookService {
     }
 
 
-
     @Override
     public List<Book> getBooksReleasedAfter(int year) {
-        return  bookRepository.findBooksByReleaseDateAfter(LocalDate.of(year, 1, 1));
+        return bookRepository.findBooksByReleaseDateAfter(LocalDate.of(year, 1, 1));
     }
 
     @Override
     public List<Book> getBooksFrom(String firstName, String lastName) {
         return bookRepository.findAllByAuthorFirstNameAndAuthorLastNameOrderByReleaseDateDescTitleAsc(firstName, lastName);
+    }
+
+    @Override
+    public List<Book> getBooksBy(AgeRestriction ageRestriction) {
+        return bookRepository.getBooksByAgeRestriction(ageRestriction);
+    }
+
+    @Override
+    public List<Book> getBooksByEditionAndNumberOfCopiesLowerThan(EditionType editionType, int copies) {
+        return bookRepository.getBooksByEditionTypeAndCopiesLessThan(editionType, copies);
+    }
+
+    @Override
+    public List<Book> getBooksWithPriceNotBetween(BigDecimal valueOne, BigDecimal valueTwo) {
+        return bookRepository.getBooksByPriceIsLessThanOrPriceIsGreaterThan(valueOne, valueTwo);
+    }
+
+    @Override
+    public List<Book> getBooksNotReleasedDuringYear(int year) {
+        return bookRepository.getBooksByReleaseDateBeforeOrReleaseDateAfter(
+                LocalDate.of(year, 1,1),
+                LocalDate.of(year, 12, 31)
+        );
+    }
+
+    @Override
+    public List<Book> getBooksReleasedBefore(LocalDate date) {
+        return bookRepository.getBooksByReleaseDateBefore(date);
+    }
+
+    @Override
+    public List<Book> getBooksTitleContaining(String value) {
+        return bookRepository.getBooksByTitleContaining(value);
+    }
+
+    @Override
+    public List<Book> getBooksByAuthorLastNameStartsWith(String value) {
+        return bookRepository.getBooksByAuthorLastNameStartingWith(value);
+    }
+
+    @Override
+    public int getCountOfBooksWithTitleLongerThan(int value) {
+        return bookRepository.countBooksByTitleLengthGreaterThan(value);
     }
 }
