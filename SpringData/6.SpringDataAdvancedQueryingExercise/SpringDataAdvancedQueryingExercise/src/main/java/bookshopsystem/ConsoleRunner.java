@@ -11,6 +11,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,14 +40,9 @@ public class ConsoleRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-//
-//        List<Book> books = bookService.getBooksByAuthorLastNameStartsWith(scanner.nextLine());
-//        books.forEach(System.out::println);
-//
-//        int bookCount = bookService.getCountOfBooksWithTitleLongerThan(12);
-//        System.out.println(bookCount);
-        Author author = authorService.getRandomAuthor();
-        int copies =  authorService.getSumOfBooksCopiesFrom(author);
-        System.out.println(copies);
+        LocalDate date = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd MMM yyyy"));
+        int copies = Integer.parseInt(scanner.nextLine());
+        int totalIncrease = bookService.increaseCopiesOfBooksReleasedAfter(date, copies);
+        System.out.println(totalIncrease);
     }
 }

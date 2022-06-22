@@ -30,4 +30,8 @@ public interface BookService {
     List<Book> getBooksByAuthorLastNameStartsWith(String value);
 
     int getCountOfBooksWithTitleLongerThan(int value);
+
+    String getBookInfo(String title);
+
+    int increaseCopiesOfBooksReleasedAfter(LocalDate date, int copies);
 }

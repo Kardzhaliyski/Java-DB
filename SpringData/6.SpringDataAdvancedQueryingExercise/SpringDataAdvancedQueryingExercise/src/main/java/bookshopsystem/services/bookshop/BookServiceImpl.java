@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
-import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
@@ -68,12 +67,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getBooksReleasedAfter(int year) {
-        return bookRepository.findBooksByReleaseDateAfter(LocalDate.of(year, 1, 1));
+        return bookRepository.getBooksByReleaseDateAfter(LocalDate.of(year, 1, 1));
     }
 
     @Override
     public List<Book> getBooksFrom(String firstName, String lastName) {
-        return bookRepository.findAllByAuthorFirstNameAndAuthorLastNameOrderByReleaseDateDescTitleAsc(firstName, lastName);
+        return bookRepository.getBooksByAuthorFirstNameAndAuthorLastNameOrderByReleaseDateDescTitleAsc(firstName, lastName);
     }
 
     @Override
@@ -94,7 +93,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> getBooksNotReleasedDuringYear(int year) {
         return bookRepository.getBooksByReleaseDateBeforeOrReleaseDateAfter(
-                LocalDate.of(year, 1,1),
+                LocalDate.of(year, 1, 1),
                 LocalDate.of(year, 12, 31)
         );
     }
@@ -117,5 +116,20 @@ public class BookServiceImpl implements BookService {
     @Override
     public int getCountOfBooksWithTitleLongerThan(int value) {
         return bookRepository.countBooksByTitleLengthGreaterThan(value);
+    }
+
+    @Override
+    public String getBookInfo(String title) {
+        String[] bookInfo = bookRepository.getBookInfo(title).split(",");
+        return String.format("%s %s %s %.2f",
+                bookInfo[0],
+                bookInfo[1],
+                bookInfo[2],
+                Double.parseDouble(bookInfo[3]));
+    }
+
+    @Override
+    public int increaseCopiesOfBooksReleasedAfter(LocalDate date, int copies) {
+        return bookRepository.increaseCopiesOfBooksReleasedAfter(date, copies) * copies;
     }
 }
