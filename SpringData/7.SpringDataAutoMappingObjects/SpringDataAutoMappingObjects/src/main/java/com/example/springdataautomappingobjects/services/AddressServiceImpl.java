@@ -5,6 +5,8 @@ import com.example.springdataautomappingobjects.repositories.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AddressServiceImpl implements AddressService {
     private AddressRepository addressRepository;
@@ -17,5 +19,10 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public void save(Address address) {
         addressRepository.save(address);
+    }
+
+    @Override
+    public List<Address> getAll() {
+        return addressRepository.findAll();
     }
 }
