@@ -2,9 +2,12 @@ package com.example.springdataautomappingobjects;
 
 import com.example.springdataautomappingobjects.models.Address;
 import com.example.springdataautomappingobjects.models.Employee;
+import com.example.springdataautomappingobjects.models.EmployeeDTO;
+import com.example.springdataautomappingobjects.models.ManagerDTO;
 import com.example.springdataautomappingobjects.services.AddressService;
 import com.example.springdataautomappingobjects.services.CityService;
 import com.example.springdataautomappingobjects.services.EmployeeService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -33,10 +36,11 @@ public class Runner implements CommandLineRunner {
         this.random = new Random();
     }
 
-
+    @Transactional
     @Override
     public void run(String... args) throws Exception {
-
+        List<EmployeeDTO> employeesWithBirthdayBefore = employeeService.getEmployeesWithBirthdayBefore(50);
+        employeesWithBirthdayBefore.forEach(System.out::println);
     }
 
     private void generateRandomEmployees() {

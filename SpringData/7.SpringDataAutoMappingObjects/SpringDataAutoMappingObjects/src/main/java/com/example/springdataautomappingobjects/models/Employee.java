@@ -3,6 +3,9 @@ package com.example.springdataautomappingobjects.models;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Employee {
@@ -18,6 +21,13 @@ public class Employee {
     private LocalDate birthday;
     @ManyToOne
     private Address address;
+    @Column(name = "on_vacation")
+    private boolean onVacation;
+    @ManyToOne
+    private Employee manager;
+    @OneToMany(mappedBy = "manager")
+    Set<Employee> subordinates;
+
 
     protected Employee() {
     }
@@ -28,6 +38,8 @@ public class Employee {
         this.salary = salary;
         this.birthday = birthday;
         this.address = address;
+        this.onVacation = false;
+        this.subordinates = new HashSet<>();
     }
 
     public long getId() {
@@ -76,5 +88,30 @@ public class Employee {
 
     private void setAddress(Address address) {
         this.address = address;
+    }
+
+    public boolean isOnVacation() {
+        return onVacation;
+    }
+
+    public void setOnVacation(boolean onVacation) {
+        this.onVacation = onVacation;
+    }
+
+    public Employee getManager() {
+        return manager;
+    }
+
+    public void setManager(Employee manager) {
+        this.manager = manager;
+    }
+
+    public Set<Employee> getSubordinates() {
+        return Collections.unmodifiableSet(subordinates);
+    }
+
+    public void addSubordinate(Employee employee) {
+        subordinates.add(employee);
+        employee.setManager(this);
     }
 }
