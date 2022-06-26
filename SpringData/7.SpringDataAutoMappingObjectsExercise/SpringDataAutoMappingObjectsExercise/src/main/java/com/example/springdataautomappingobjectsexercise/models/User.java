@@ -1,6 +1,8 @@
 package com.example.springdataautomappingobjectsexercise.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,6 +13,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
@@ -85,21 +88,21 @@ public class User {
         isAdmin = admin;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-
-        User user = (User) o;
-
-        if (!getId().equals(user.getId())) return false;
-        return getEmail().equals(user.getEmail());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getId().hashCode();
-        result = 31 * result + getEmail().hashCode();
-        return result;
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (!(o instanceof User)) return false;
+//
+//        User user = (User) o;
+//
+//        if (!getId().equals(user.getId())) return false;
+//        return getEmail().equals(user.getEmail());
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int result = getId().hashCode();
+//        result = 31 * result + getEmail().hashCode();
+//        return result;
+//    }
 }
