@@ -10,7 +10,7 @@ public class UserService {
 
     public User register() {
         Scanner sc = new Scanner(System.in);
-        User.UserBuilder builder = User.getBuilder();
+        User.Builder builder = User.getBuilder();
 
         //todo: add setUsername with check if it already exists in the database
 
