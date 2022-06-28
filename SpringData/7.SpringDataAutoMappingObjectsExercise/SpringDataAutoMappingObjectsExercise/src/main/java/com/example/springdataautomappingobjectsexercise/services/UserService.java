@@ -8,12 +8,46 @@ import java.util.Scanner;
 @Service
 public class UserService {
 
+    private Scanner sc;
+
+    public UserService() {
+        this.sc = new Scanner(System.in);
+    }
+
     public User register() {
-        Scanner sc = new Scanner(System.in);
+
         User.Builder builder = User.getBuilder();
 
-        //todo: add setUsername with check if it already exists in the database
+        setEmail(builder);
+        setPassword(builder);
+        setFullName(builder);
+        return builder.build();
+    }
 
+    private void setEmail(User.Builder builder) {
+        while (builder.getEmail() == null) {
+            try {
+                System.out.print("Enter email address: ");
+                builder.setEmail(sc.nextLine());
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        //todo: check if it already exists in the database
+    }
+
+    private void setFullName(User.Builder builder) {
+        while (builder.getFullName() == null) {
+            try {
+                System.out.print("Enter full name: ");
+                builder.setFullName(sc.nextLine());
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private void setPassword(User.Builder builder) {
         while (builder.getPassword() == null) {
             try {
                 System.out.print("Enter password: ");
@@ -25,9 +59,9 @@ public class UserService {
                 System.out.println(e.getMessage());
             }
         }
-
-        //todo: add setFullName
-
-        return builder.build();
     }
+
+
+
+
 }

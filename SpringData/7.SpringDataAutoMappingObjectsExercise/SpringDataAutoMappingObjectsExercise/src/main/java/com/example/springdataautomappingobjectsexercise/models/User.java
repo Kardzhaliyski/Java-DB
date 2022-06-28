@@ -82,7 +82,7 @@ public class User {
         if (fullName == null || fullName.isBlank()) {
             throw new IllegalArgumentException("Full name should not be null or blank!");
         }
-        this.fullName = fullName;
+        this.fullName = fullName.trim();
     }
 
     public List<Game> getOwnedGames() {
@@ -103,6 +103,11 @@ public class User {
 
     private boolean checkIfOwn(Game game) {
         return ownedGames.contains(game);
+    }
+
+    @Override
+    public String toString() {
+        return "User: " + fullName + " Email: " + email;
     }
 
     public static Builder getBuilder() {
