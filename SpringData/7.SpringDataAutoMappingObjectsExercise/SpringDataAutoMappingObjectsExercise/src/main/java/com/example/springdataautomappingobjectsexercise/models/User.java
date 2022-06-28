@@ -31,13 +31,6 @@ public class User {
         this.isAdmin = false;
     }
 
-    private User(String email, String password, String fullName) {
-        this();
-        setEmail(email);
-        setPassword(password);
-        setFullName(fullName);
-    }
-
     public Long getId() {
         return id;
     }
@@ -112,25 +105,22 @@ public class User {
         return ownedGames.contains(game);
     }
 
-    public static UserBuilder getBuilder() {
-        return new UserBuilder();
+    public static Builder getBuilder() {
+        return new Builder();
     }
 
-    public static class UserBuilder {
+    public static class Builder {
         private final User user;
-        private String email;
-        private String password;
-        private String fullName;
 
-        private UserBuilder() {
+        private Builder() {
             user = new User();
         }
 
         public String getEmail() {
-            return email;
+            return user.getEmail();
         }
 
-        public UserBuilder setEmail(String email) {
+        public Builder setEmail(String email) {
             user.setEmail(email);
             return this;
         }
@@ -139,7 +129,7 @@ public class User {
             return user.getPassword();
         }
 
-        public UserBuilder setPassword(String password, String confirmPassword) {
+        public Builder setPassword(String password, String confirmPassword) {
             if (!password.equals(confirmPassword)) {
                 throw new IllegalArgumentException("Confirm password must match password!");
             }
@@ -148,30 +138,27 @@ public class User {
         }
 
         public String getFullName() {
-            return fullName;
+            return user.getFullName();
         }
 
-        public UserBuilder setFullName(String fullName) {
-            if (fullName == null || fullName.isBlank()) {
-                throw new IllegalArgumentException("Full name should not be null or blank!");
-            }
-            this.fullName = fullName;
+        public Builder setFullName(String fullName) {
+            user.setFullName(fullName);
             return this;
         }
 
         public User build() {
-            if (this.password == null) {
+            if (user.password == null) {
                 throw new IllegalArgumentException("Password must not be null!");
             }
-            if (this.email == null) {
+            if (user.email == null) {
                 throw new IllegalArgumentException("Email must not be null!");
             }
 
-            if (this.fullName == null) {
+            if (user.fullName == null) {
                 throw new IllegalArgumentException("Full name must not be null!");
             }
 
-            return new User(this.email, this.password, this.fullName);
+            return user;
         }
     }
 
