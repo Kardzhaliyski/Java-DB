@@ -4,43 +4,34 @@ import com.example.springdataautomappingobjectsexercise.models.User;
 import com.example.springdataautomappingobjectsexercise.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Scanner;
-
 @Service
 public class UserServiceImpl implements UserService{
 
-    private final Scanner sc;
+    private final ReaderService sc;
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(ReaderService sc, UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.sc = new Scanner(System.in);
+        this.sc = sc;
     }
 
-    private void startMenu() {
-        System.out.println(
-                "------------------------------------------------------\n" +
-                        "--- Menu ---\n" +
-                        "------------\n" +
-                        "-- 1 : Login\n" +
-                        "-- 2 : Register\n" +
-                        "------------------------------------------------------");
 
-        switch (sc.nextLine().trim()) {
-            case "1": {
-                login();
-                break;
-            } case "2": {
-                register();
-                break;
-            } default: {
 
+    public User login() {
+        User user = null;
+        while (user == null) {
+            System.out.print("Enter email address: ");
+            String email = sc.nextLine().trim();
+            System.out.println("Enter password: ");
+            String password = sc.nextLine().trim();
+            user = userRepository.findUserByEmailAndPassword(email, password);
+            if(user == null) {
+                System.out.println("Wrong email or password! Please try again.");
             }
         }
 
-    }
-
-    public void login() {
+        System.out.println("Login successfully!");
+        return user;
     }
 
     public void register() {
@@ -53,11 +44,10 @@ public class UserServiceImpl implements UserService{
 
         try {
             save(user);
+            System.out.println("Registration success!");
         } catch (IllegalStateException e) {
             System.out.println("User with this email already exists!");
         }
-
-        startMenu();
     }
 
     private void setEmail(User.Builder builder) {

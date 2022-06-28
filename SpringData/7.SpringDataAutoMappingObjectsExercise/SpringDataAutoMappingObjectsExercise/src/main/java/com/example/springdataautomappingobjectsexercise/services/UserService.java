@@ -1,7 +1,9 @@
 package com.example.springdataautomappingobjectsexercise.services;
 
 
+import com.example.springdataautomappingobjectsexercise.models.User;
+
 public interface UserService {
-    void login();
+    User login();
     void register();
 }

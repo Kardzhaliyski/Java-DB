@@ -1,29 +1,26 @@
 package com.example.springdataautomappingobjectsexercise;
 
-import com.example.springdataautomappingobjectsexercise.models.User;
+import com.example.springdataautomappingobjectsexercise.services.MenuService;
 import com.example.springdataautomappingobjectsexercise.services.UserService;
-import com.example.springdataautomappingobjectsexercise.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.Scanner;
-
 @Component
 public class Runner implements CommandLineRunner {
 
-    private final UserService userService;
+    private final MenuService menuService;
 
 
     @Autowired
-    public Runner(UserService userService) {
-        this.userService = userService;
+    public Runner(MenuService menuService) {
+        this.menuService = menuService;
     }
 
 
     @Override
     public void run(String... args) throws Exception {
-        userService.register();
+        menuService.start();
 
     }
 }
