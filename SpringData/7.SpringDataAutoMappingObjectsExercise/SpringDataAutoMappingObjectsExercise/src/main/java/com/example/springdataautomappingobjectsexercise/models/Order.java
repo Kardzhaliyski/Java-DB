@@ -39,6 +39,9 @@ public class Order {
     }
 
     private void setUser(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User should not be null!");
+        }
         this.user = user;
     }
 
@@ -46,15 +49,23 @@ public class Order {
         return Collections.unmodifiableSet(games);
     }
 
-    private void setGames(Set<Game> games) {
-        this.games = games;
+    public void addGame(Game game) {
+        if (game == null) {
+            throw new IllegalArgumentException("Game must not be null!");
+        }
+
+        if (games.contains(game)) {
+            throw new IllegalArgumentException("Game is already in the order list!");
+        }
+
+        games.add(game);
     }
 
     public Boolean getFinished() {
         return finished;
     }
 
-    private void setFinished(Boolean finished) {
-        this.finished = finished;
+    private void setFinished() {
+        this.finished = true;
     }
 }

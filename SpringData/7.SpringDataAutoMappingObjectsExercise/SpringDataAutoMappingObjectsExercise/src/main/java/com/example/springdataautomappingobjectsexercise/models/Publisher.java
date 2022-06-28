@@ -35,6 +35,9 @@ public class Publisher {
     }
 
     private void setName(String name) {
+        if(name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Publisher name should not be Null or empty!");
+        }
         this.name = name;
     }
 
@@ -42,7 +45,7 @@ public class Publisher {
         return Collections.unmodifiableSet(this.games);
     }
 
-    private void setGames(Set<Game> games) {
-        this.games = games;
+    public void addGame(Game game) {
+        this.games.add(game);
     }
 }
