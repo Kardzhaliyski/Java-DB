@@ -1,7 +1,5 @@
 package com.example.springdataautomappingobjectsexercise.services;
 
+public interface MenuService {
 
-public interface UserService {
-    void login();
-    void register();
 }
