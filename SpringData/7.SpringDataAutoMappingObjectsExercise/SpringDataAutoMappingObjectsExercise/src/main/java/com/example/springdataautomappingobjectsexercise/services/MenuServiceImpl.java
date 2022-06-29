@@ -1,8 +1,7 @@
 package com.example.springdataautomappingobjectsexercise.services;
 
 import com.example.springdataautomappingobjectsexercise.models.User;
-import com.example.springdataautomappingobjectsexercise.models.enums.Menu;
-import com.example.springdataautomappingobjectsexercise.models.enums.StartMenu;
+import com.example.springdataautomappingobjectsexercise.models.enums.StartMenuOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +28,13 @@ public class MenuServiceImpl implements MenuService {
     private void startMenu() {
         printMenu();
 
-        StartMenu menu = null;
+        StartMenuOptions menu = null;
+
 
         while (menu == null) {
             try {
                 System.out.print("Chose menu number: ");
-                menu = StartMenu.values()[Integer.parseInt(sc.nextLine()) - 1];
+                menu = StartMenuOptions.values()[Integer.parseInt(sc.nextLine()) - 1];
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 System.out.println("Wrong input. Please try again.");
             }
@@ -70,7 +70,7 @@ public class MenuServiceImpl implements MenuService {
         stringBuilder.append(MENU_DELIMITER).append(System.lineSeparator());
         stringBuilder.append(MENU_SIDE_DELIMITER).append(" Menu ").append(MENU_SIDE_DELIMITER).append(System.lineSeparator());
         stringBuilder.append(MENU_HALF_DELIMITER).append(System.lineSeparator());
-        for (StartMenu value : StartMenu.values()) {
+        for (StartMenuOptions value : StartMenuOptions.values()) {
             stringBuilder.append(MENU_SIDE_DELIMITER)
                     .append(value.ordinal() + 1)
                     .append(MENU_ORDINAL_DELIMITER)

@@ -1,5 +1,6 @@
 package com.example.springdataautomappingobjectsexercise.models.enums;
 
-public interface  Menu {
+public interface MenuOptions {
     String nameCapitalized();
+    String menuName();
 }
