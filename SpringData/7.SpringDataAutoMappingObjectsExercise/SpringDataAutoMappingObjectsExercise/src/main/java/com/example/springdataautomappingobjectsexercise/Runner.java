@@ -22,7 +22,6 @@ public class Runner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Menu menu = new MainMenu();
-        menu.display();
+        menuService.start();
     }
 }

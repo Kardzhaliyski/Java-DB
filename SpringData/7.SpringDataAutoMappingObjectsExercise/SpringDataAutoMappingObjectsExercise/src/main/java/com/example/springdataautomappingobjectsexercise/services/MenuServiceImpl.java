@@ -1,84 +1,36 @@
 package com.example.springdataautomappingobjectsexercise.services;
 
-import com.example.springdataautomappingobjectsexercise.models.entities.User;
-import com.example.springdataautomappingobjectsexercise.models.enums.StartMenuOption;
+import com.example.springdataautomappingobjectsexercise.models.menus.Menu;
+import com.example.springdataautomappingobjectsexercise.models.menus.StartMenu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MenuServiceImpl implements MenuService {
-    private static final String MENU_DELIMITER = " -------------------------------------------------- ";
-    private static final String MENU_HALF_DELIMITER = " ------------------------- ";
-    private static final String MENU_SIDE_DELIMITER = " --- ";
-    private static final String MENU_ORDINAL_DELIMITER = " : ";
-
-    private final StringBuilder stringBuilder;
-    private final ReaderService sc;
-    private final UserService userService;
-
-    private User user;
+    Menu menu;
 
     @Autowired
-    public MenuServiceImpl(ReaderService sc, UserService userService) {
-        this.stringBuilder = new StringBuilder();
-        this.sc = sc;
-        this.userService = userService;
+    public MenuServiceImpl(StartMenu startMenu) {
+        setMenu(startMenu);
     }
 
-    private void startMenu() {
-        printMenu();
+    private void setMenu(Menu menu) {
+//        if (menu == null) {
+//            throw new IllegalArgumentException("Menu should not be null!");
+//        }
 
-        StartMenuOption menu = null;
-
-
-        while (menu == null) {
-            try {
-                System.out.print("Chose menu number: ");
-                menu = StartMenuOption.values()[Integer.parseInt(sc.nextLine()) - 1];
-            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                System.out.println("Wrong input. Please try again.");
-            }
-        }
-        switch (menu) {
-            case LOGIN: {
-                user = userService.login();
-                break;
-            } case REGISTER: {
-                userService.register();
-                startMenu();
-                break;
-            }
-        }
+        this.menu = menu;
     }
-
-    public void mainMenu() {
-        if(user == null) {
-            System.out.println("You need to be logged in to see the menu.");
-            return;
-        }
-//        printMainMenu();
-    }
-
-
 
     @Override
     public void start() {
-        startMenu();
-    }
 
-    private void printMenu() {
-        stringBuilder.append(MENU_DELIMITER).append(System.lineSeparator());
-        stringBuilder.append(MENU_SIDE_DELIMITER).append(" Menu ").append(MENU_SIDE_DELIMITER).append(System.lineSeparator());
-        stringBuilder.append(MENU_HALF_DELIMITER).append(System.lineSeparator());
-        for (StartMenuOption value : StartMenuOption.values()) {
-            stringBuilder.append(MENU_SIDE_DELIMITER)
-                    .append(value.ordinal() + 1)
-                    .append(MENU_ORDINAL_DELIMITER)
-                    .append(value.nameCapitalized())
-                    .append(System.lineSeparator());
+        while (true) {
+            Menu newMenu = this.menu.execute();
+            setMenu(newMenu);
+            if (menu == null) {
+                break;
+            }
         }
-        stringBuilder.append(MENU_DELIMITER).append(System.lineSeparator());
-        System.out.println(stringBuilder);
-        stringBuilder.setLength(0);
     }
 }

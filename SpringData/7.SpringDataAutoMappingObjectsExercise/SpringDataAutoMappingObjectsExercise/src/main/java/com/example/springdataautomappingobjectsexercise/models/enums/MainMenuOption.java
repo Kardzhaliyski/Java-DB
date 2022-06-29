@@ -1,8 +1,8 @@
 package com.example.springdataautomappingobjectsexercise.models.enums;
 
 public enum MainMenuOption implements MenuOption {
-    ALL_GAMES,
-    OWNED_GAMES;
+    SHOW_ALL_GAMES,
+    SHOW_OWNED_GAMES;
 
 
     @Override

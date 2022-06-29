@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService{
         while (user == null) {
             System.out.print("Enter email address: ");
             String email = sc.nextLine().trim();
-            System.out.println("Enter password: ");
+            System.out.print("Enter password: ");
             String password = sc.nextLine().trim();
             user = userRepository.findUserByEmailAndPassword(email, password);
             if(user == null) {
