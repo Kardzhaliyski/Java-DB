@@ -1,4 +1,4 @@
-package com.example.springdataautomappingobjectsexercise.models;
+package com.example.springdataautomappingobjectsexercise.models.entities;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

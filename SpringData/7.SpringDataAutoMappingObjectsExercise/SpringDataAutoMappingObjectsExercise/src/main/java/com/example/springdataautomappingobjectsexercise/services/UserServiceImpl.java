@@ -1,6 +1,6 @@
 package com.example.springdataautomappingobjectsexercise.services;
 
-import com.example.springdataautomappingobjectsexercise.models.User;
+import com.example.springdataautomappingobjectsexercise.models.entities.User;
 import com.example.springdataautomappingobjectsexercise.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 

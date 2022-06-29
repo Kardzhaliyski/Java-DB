@@ -1,7 +1,7 @@
 package com.example.springdataautomappingobjectsexercise.services;
 
 
-import com.example.springdataautomappingobjectsexercise.models.User;
+import com.example.springdataautomappingobjectsexercise.models.entities.User;
 
 public interface UserService {
     User login();

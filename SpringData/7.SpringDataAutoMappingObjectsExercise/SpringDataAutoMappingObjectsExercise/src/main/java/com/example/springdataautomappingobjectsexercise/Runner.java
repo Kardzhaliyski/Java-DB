@@ -1,7 +1,9 @@
 package com.example.springdataautomappingobjectsexercise;
 
+import com.example.springdataautomappingobjectsexercise.models.menus.MainMenu;
+import com.example.springdataautomappingobjectsexercise.models.menus.Menu;
+import com.example.springdataautomappingobjectsexercise.models.menus.StartMenu;
 import com.example.springdataautomappingobjectsexercise.services.MenuService;
-import com.example.springdataautomappingobjectsexercise.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -20,7 +22,7 @@ public class Runner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        menuService.start();
-
+        Menu menu = new MainMenu();
+        menu.display();
     }
 }
