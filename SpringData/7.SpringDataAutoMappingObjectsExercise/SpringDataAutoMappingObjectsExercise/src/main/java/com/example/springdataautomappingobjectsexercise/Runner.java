@@ -1,8 +1,5 @@
 package com.example.springdataautomappingobjectsexercise;
 
-import com.example.springdataautomappingobjectsexercise.models.menus.MainMenu;
-import com.example.springdataautomappingobjectsexercise.models.menus.Menu;
-import com.example.springdataautomappingobjectsexercise.models.menus.StartMenu;
 import com.example.springdataautomappingobjectsexercise.services.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -24,4 +21,5 @@ public class Runner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         menuService.start();
     }
+
 }

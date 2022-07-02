@@ -9,13 +9,12 @@ public class UserServiceImpl implements UserService{
 
     private final ReaderService sc;
     private final UserRepository userRepository;
+    private User user;
 
     public UserServiceImpl(ReaderService sc, UserRepository userRepository) {
         this.userRepository = userRepository;
         this.sc = sc;
     }
-
-
 
     public User login() {
         User user = null;
@@ -31,6 +30,7 @@ public class UserServiceImpl implements UserService{
         }
 
         System.out.println("Login successfully!");
+        this.user = user;
         return user;
     }
 
@@ -59,7 +59,6 @@ public class UserServiceImpl implements UserService{
                 System.out.println(e.getMessage());
             }
         }
-        //todo: check if it already exists in the database
     }
 
     private void setFullName(User.Builder builder) {
@@ -94,6 +93,5 @@ public class UserServiceImpl implements UserService{
             userRepository.save(user);
         }
     }
-
 
 }

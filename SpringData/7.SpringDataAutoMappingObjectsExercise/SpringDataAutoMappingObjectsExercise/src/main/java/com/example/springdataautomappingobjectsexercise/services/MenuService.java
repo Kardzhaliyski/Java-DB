@@ -1,6 +1,7 @@
 package com.example.springdataautomappingobjectsexercise.services;
 
-import com.example.springdataautomappingobjectsexercise.models.menus.Menu;
+
+import com.example.springdataautomappingobjectsexercise.models.entities.User;
 
 public interface MenuService {
 

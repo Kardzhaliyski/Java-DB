@@ -1,5 +1,6 @@
 package com.example.springdataautomappingobjectsexercise.models.menus;
 
+import com.example.springdataautomappingobjectsexercise.models.entities.User;
 import com.example.springdataautomappingobjectsexercise.models.enums.MenuOption;
 import com.example.springdataautomappingobjectsexercise.models.enums.StartMenuOption;
 import com.example.springdataautomappingobjectsexercise.services.ReaderService;
@@ -10,23 +11,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class StartMenu extends MenuImpl {
     private final static MenuOption[] MENU_OPTIONS = StartMenuOption.values();
-    private UserService userService;
-    private MainMenu mainMenu;
-    protected StartMenu() {
-    }
+    private final UserService userService;
+    private final MainMenu mainMenu;
+    private final AdminMenu adminMenu;
     @Autowired
-    protected StartMenu(ReaderService reader, UserService userService, MainMenu mainMenu) {
+    protected StartMenu(ReaderService reader, UserService userService, MainMenu mainMenu, AdminMenu adminMenu) {
         super(reader, MENU_OPTIONS);
         this.userService = userService;
         this.mainMenu = mainMenu;
+        this.adminMenu = adminMenu;
     }
 
     @Override
     protected Menu executeMenuOption(MenuOption menu) {
         switch ((StartMenuOption) menu) {
             case LOGIN: {
-                userService.login();
-                return mainMenu;
+                User user = userService.login();
+                if(user.isAdmin()) {
+                    return adminMenu;
+                } else {
+                    return mainMenu;
+                }
             }
             case REGISTER: {
                 userService.register();
@@ -35,6 +40,5 @@ public class StartMenu extends MenuImpl {
         }
 
         return null;
-
     }
 }

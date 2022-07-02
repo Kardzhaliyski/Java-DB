@@ -8,7 +8,7 @@ public abstract class MenuImpl implements Menu {
     private MenuOption[] menuOptions;
     protected ReaderService reader;
 
-    protected MenuImpl() {
+    private MenuImpl() {
     }
 
     protected MenuImpl(ReaderService reader, MenuOption[] menuOptions) {

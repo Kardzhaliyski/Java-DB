@@ -1,5 +1,6 @@
 package com.example.springdataautomappingobjectsexercise.services;
 
+import com.example.springdataautomappingobjectsexercise.models.entities.User;
 import com.example.springdataautomappingobjectsexercise.models.menus.Menu;
 import com.example.springdataautomappingobjectsexercise.models.menus.StartMenu;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,9 @@ public class MenuServiceImpl implements MenuService {
     }
 
     private void setMenu(Menu menu) {
-//        if (menu == null) {
-//            throw new IllegalArgumentException("Menu should not be null!");
-//        }
+        if (menu == null) {
+            throw new IllegalArgumentException("Menu should not be null!");
+        }
 
         this.menu = menu;
     }
@@ -33,4 +34,6 @@ public class MenuServiceImpl implements MenuService {
             }
         }
     }
+
+
 }
