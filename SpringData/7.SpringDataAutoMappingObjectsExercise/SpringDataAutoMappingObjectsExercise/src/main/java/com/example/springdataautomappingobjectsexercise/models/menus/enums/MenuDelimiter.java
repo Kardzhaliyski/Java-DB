@@ -1,4 +1,4 @@
-package com.example.springdataautomappingobjectsexercise.models.menus;
+package com.example.springdataautomappingobjectsexercise.models.menus.enums;
 
 public abstract class MenuDelimiter {
     public static final String LONG_LINE = " -------------------------------------------------- ";

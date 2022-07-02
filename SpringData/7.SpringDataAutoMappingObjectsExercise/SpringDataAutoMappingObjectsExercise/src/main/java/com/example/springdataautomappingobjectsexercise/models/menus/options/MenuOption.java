@@ -1,4 +1,4 @@
-package com.example.springdataautomappingobjectsexercise.models.enums;
+package com.example.springdataautomappingobjectsexercise.models.menus.options;
 
 public interface MenuOption {
     String name();

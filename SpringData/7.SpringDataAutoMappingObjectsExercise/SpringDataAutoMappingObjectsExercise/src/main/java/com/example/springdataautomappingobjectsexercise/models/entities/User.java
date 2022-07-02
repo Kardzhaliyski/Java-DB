@@ -7,11 +7,63 @@ import java.util.List;
 
 @Entity(name = "users")
 public class User {
+    public static class Builder {
+        private final User user;
+
+        private Builder() {
+            user = new User();
+        }
+
+        public String getEmail() {
+            return user.getEmail();
+        }
+
+        public Builder setEmail(String email) {
+            user.setEmail(email);
+            return this;
+        }
+
+        public String getPassword() {
+            return user.getPassword();
+        }
+
+        public Builder setPassword(String password, String confirmPassword) {
+            if (!password.equals(confirmPassword)) {
+                throw new IllegalArgumentException("Confirm password must match password!");
+            }
+            user.setPassword(password);
+            return this;
+        }
+
+        public String getFullName() {
+            return user.getFullName();
+        }
+
+        public Builder setFullName(String fullName) {
+            user.setFullName(fullName);
+            return this;
+        }
+
+        public User build() {
+            if (user.password == null) {
+                throw new IllegalStateException("Password must not be null!");
+            }
+            if (user.email == null) {
+                throw new IllegalStateException("Email must not be null!");
+            }
+
+            if (user.fullName == null) {
+                throw new IllegalStateException("Full name must not be null!");
+            }
+
+            return user;
+        }
+    }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
@@ -23,12 +75,17 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "game_id", referencedColumnName = "id"))
     private List<Game> ownedGames;
+
     @Column(name = "is_admin", nullable = false)
     private Boolean isAdmin;
 
     protected User() {
         this.ownedGames = new ArrayList<>();
         this.isAdmin = false;
+    }
+
+    public static Builder getBuilder() {
+        return new Builder();
     }
 
     public Long getId() {
@@ -110,78 +167,4 @@ public class User {
         return "User: " + fullName + " Email: " + email;
     }
 
-    public static Builder getBuilder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-        private final User user;
-
-        private Builder() {
-            user = new User();
-        }
-
-        public String getEmail() {
-            return user.getEmail();
-        }
-
-        public Builder setEmail(String email) {
-            user.setEmail(email);
-            return this;
-        }
-
-        public String getPassword() {
-            return user.getPassword();
-        }
-
-        public Builder setPassword(String password, String confirmPassword) {
-            if (!password.equals(confirmPassword)) {
-                throw new IllegalArgumentException("Confirm password must match password!");
-            }
-            user.setPassword(password);
-            return this;
-        }
-
-        public String getFullName() {
-            return user.getFullName();
-        }
-
-        public Builder setFullName(String fullName) {
-            user.setFullName(fullName);
-            return this;
-        }
-
-        public User build() {
-            if (user.password == null) {
-                throw new IllegalArgumentException("Password must not be null!");
-            }
-            if (user.email == null) {
-                throw new IllegalArgumentException("Email must not be null!");
-            }
-
-            if (user.fullName == null) {
-                throw new IllegalArgumentException("Full name must not be null!");
-            }
-
-            return user;
-        }
-    }
-
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (!(o instanceof User)) return false;
-//
-//        User user = (User) o;
-//
-//        if (!getId().equals(user.getId())) return false;
-//        return getEmail().equals(user.getEmail());
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        int result = getId().hashCode();
-//        result = 31 * result + getEmail().hashCode();
-//        return result;
-//    }
 }

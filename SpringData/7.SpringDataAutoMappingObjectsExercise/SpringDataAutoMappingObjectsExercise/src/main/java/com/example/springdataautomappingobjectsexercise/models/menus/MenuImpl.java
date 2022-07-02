@@ -1,6 +1,8 @@
 package com.example.springdataautomappingobjectsexercise.models.menus;
 
-import com.example.springdataautomappingobjectsexercise.models.enums.MenuOption;
+import com.example.springdataautomappingobjectsexercise.models.menus.enums.MenuDelimiter;
+import com.example.springdataautomappingobjectsexercise.models.menus.enums.MenuType;
+import com.example.springdataautomappingobjectsexercise.models.menus.options.MenuOption;
 import com.example.springdataautomappingobjectsexercise.services.ReaderService;
 
 
@@ -16,7 +18,7 @@ public abstract class MenuImpl implements Menu {
         this.menuOptions = menuOptions;
     }
 
-    public Menu execute() {
+    public MenuType execute() {
         this.display();
         MenuOption menu = choseMenuOption();
         return this.executeMenuOption(menu);
@@ -39,7 +41,7 @@ public abstract class MenuImpl implements Menu {
         stringBuilder.setLength(0);
     }
 
-    protected abstract Menu executeMenuOption(MenuOption menu);
+    protected abstract MenuType executeMenuOption(MenuOption menu);
 
     protected MenuOption choseMenuOption() {
         MenuOption menuOption = null;

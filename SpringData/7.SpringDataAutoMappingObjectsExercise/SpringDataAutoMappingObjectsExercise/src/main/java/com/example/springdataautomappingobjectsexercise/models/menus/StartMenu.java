@@ -1,8 +1,9 @@
 package com.example.springdataautomappingobjectsexercise.models.menus;
 
 import com.example.springdataautomappingobjectsexercise.models.entities.User;
-import com.example.springdataautomappingobjectsexercise.models.enums.MenuOption;
-import com.example.springdataautomappingobjectsexercise.models.enums.StartMenuOption;
+import com.example.springdataautomappingobjectsexercise.models.menus.enums.MenuType;
+import com.example.springdataautomappingobjectsexercise.models.menus.options.MenuOption;
+import com.example.springdataautomappingobjectsexercise.models.menus.options.StartMenuOption;
 import com.example.springdataautomappingobjectsexercise.services.ReaderService;
 import com.example.springdataautomappingobjectsexercise.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,33 +13,29 @@ import org.springframework.stereotype.Component;
 public class StartMenu extends MenuImpl {
     private final static MenuOption[] MENU_OPTIONS = StartMenuOption.values();
     private final UserService userService;
-    private final MainMenu mainMenu;
-    private final AdminMenu adminMenu;
     @Autowired
-    protected StartMenu(ReaderService reader, UserService userService, MainMenu mainMenu, AdminMenu adminMenu) {
+    protected StartMenu(ReaderService reader, UserService userService) {
         super(reader, MENU_OPTIONS);
         this.userService = userService;
-        this.mainMenu = mainMenu;
-        this.adminMenu = adminMenu;
     }
 
     @Override
-    protected Menu executeMenuOption(MenuOption menu) {
+    protected MenuType executeMenuOption(MenuOption menu) {
         switch ((StartMenuOption) menu) {
             case LOGIN: {
                 User user = userService.login();
                 if(user.isAdmin()) {
-                    return adminMenu;
+                    return MenuType.ADMIN_MENU;
                 } else {
-                    return mainMenu;
+                    return MenuType.MAIN_MENU;
                 }
             }
             case REGISTER: {
                 userService.register();
-                return this;
+                return MenuType.START_MENU;
             }
         }
 
-        return null;
+        return MenuType.START_MENU;
     }
 }

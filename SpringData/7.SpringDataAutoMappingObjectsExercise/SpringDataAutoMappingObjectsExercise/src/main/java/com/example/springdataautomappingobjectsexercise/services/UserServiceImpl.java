@@ -50,6 +50,11 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Override
+    public void logout() {
+        user = null;
+    }
+
     private void setEmail(User.Builder builder) {
         while (builder.getEmail() == null) {
             try {
