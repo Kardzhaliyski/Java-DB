@@ -9,4 +9,8 @@ public interface GameService {
     void save(Game game);
 
     void addGame();
+    void printAllGame();
+
+    Game getGame(Long id);
+    String readTitle();
 }

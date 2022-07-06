@@ -2,6 +2,7 @@ package com.example.springdataautomappingobjectsexercise.services;
 
 import com.example.springdataautomappingobjectsexercise.models.menus.*;
 import com.example.springdataautomappingobjectsexercise.models.menus.enums.MenuType;
+import com.example.springdataautomappingobjectsexercise.models.menus.options.EditGameMenuOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +12,14 @@ public class MenuServiceImpl implements MenuService {
     private final Menu startMenu;
     private final Menu adminMenu;
     private final Menu mainMenu;
+    private final Menu editGameMenu;
 
     @Autowired
-    public MenuServiceImpl(StartMenu startMenu, AdminMenu adminMenu, MainMenu mainMenu) {
+    public MenuServiceImpl(StartMenu startMenu, AdminMenu adminMenu, MainMenu mainMenu, EditGameMenu editGameMenu) {
         this.startMenu = startMenu;
         this.adminMenu = adminMenu;
         this.mainMenu = mainMenu;
+        this.editGameMenu = editGameMenu;
         setMenu(startMenu);
     }
 
@@ -41,14 +44,16 @@ public class MenuServiceImpl implements MenuService {
     }
 
     private Menu parseMenu(MenuType type) {
+        System.out.println();
         switch (type){
-
             case START_MENU:
                 return startMenu;
             case ADMIN_MENU:
                 return adminMenu;
             case MAIN_MENU:
                 return mainMenu;
+            case EDIT_GAME_MENU:
+                return editGameMenu;
         }
         return null;
     }

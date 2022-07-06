@@ -30,7 +30,7 @@ public class AdminMenu extends MenuImpl {
                 return MenuType.ADMIN_MENU;
             }
             case EDIT_GAME:
-                break;
+                return MenuType.EDIT_GAME_MENU;
             case DELETE_GAME:
                 break;
             case LOGOUT:
@@ -40,4 +40,5 @@ public class AdminMenu extends MenuImpl {
 
         return null;
     }
+
 }

@@ -49,4 +49,9 @@ public class Publisher {
     public void addGame(Game game) {
         this.games.add(game);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

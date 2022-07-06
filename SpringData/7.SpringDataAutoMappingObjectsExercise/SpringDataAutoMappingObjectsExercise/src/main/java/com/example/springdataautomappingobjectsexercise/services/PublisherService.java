@@ -10,4 +10,9 @@ public interface PublisherService {
     Publisher getByName(String name);
 
     void save(Publisher publisher);
+
+    Boolean validName(String name);
+    Publisher newPublisher(String name);
+
+    String readName();
 }

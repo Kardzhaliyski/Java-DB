@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class PublisherServiceImpl implements PublisherService {
     private final PublisherRepository publisherRepository;
+    private final ReaderService reader;
 
     @Autowired
-    public PublisherServiceImpl(PublisherRepository publisherRepository) {
+    public PublisherServiceImpl(PublisherRepository publisherRepository, ReaderService reader) {
         this.publisherRepository = publisherRepository;
+        this.reader = reader;
     }
 
     @Override
@@ -33,5 +35,32 @@ public class PublisherServiceImpl implements PublisherService {
     @Override
     public void save(Publisher publisher) {
         publisherRepository.save(publisher);
+    }
+
+    @Override
+    public Boolean validName(String name) {
+        if(name == null || name.isBlank()) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public Publisher newPublisher(String name) {
+        Publisher publisher = new Publisher(name);
+        publisherRepository.save(publisher);
+        return publisher;
+    }
+
+    public String readName() {
+        while (true) {
+            System.out.print("Enter publisher name: ");
+            String name = reader.nextLine();
+            if (!validName(name)) {
+                System.out.println("Invalid publisher name: " + name);
+                continue;
+            }
+            return name;
+        }
     }
 }

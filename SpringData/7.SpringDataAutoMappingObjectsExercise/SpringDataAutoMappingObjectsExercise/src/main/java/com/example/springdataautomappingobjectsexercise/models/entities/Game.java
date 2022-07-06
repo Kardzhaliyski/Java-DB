@@ -5,9 +5,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity(name = "games")
-public class Game {
+public class Game{
 
-    public static class Builder {
+    public static class Builder{
         private final Game game;
 
         private Builder() {
@@ -15,18 +15,19 @@ public class Game {
         }
 
         public Game build() {
-            if(game.getTitle() == null) {
+            if (game.getTitle() == null) {
                 throw new IllegalStateException("Game title should not be null!");
             }
-            if(game.getPublisher() == null) {
+            if (game.getPublisher() == null) {
                 throw new IllegalStateException("Game publisher should not be null!");
             }
-            if(game.getPrice() == null) {
+            if (game.getPrice() == null) {
                 throw new IllegalStateException("Game price should not be null!");
             }
 
             return game;
         }
+
         public Builder setTitle(String title) {
             game.setTitle(title);
             return this;
@@ -104,7 +105,7 @@ public class Game {
         purchasable = true;
     }
 
-    public Game(String title, Publisher publisher , String trailerURLId, String thumbnailUrl, Double size, BigDecimal price, String description, LocalDate releaseDate) {
+    public Game(String title, Publisher publisher, String trailerURLId, String thumbnailUrl, Double size, BigDecimal price, String description, LocalDate releaseDate) {
         setTitle(title);
         setPublisher(publisher);
         setTrailerURLId(trailerURLId);
@@ -114,6 +115,10 @@ public class Game {
         setDescription(description);
         setReleaseDate(releaseDate);
         this.purchasable = true;
+    }
+
+    public Game(Game game) {
+        copy(game);
     }
 
     public static Builder getBuilder() {
@@ -132,8 +137,8 @@ public class Game {
         return title;
     }
 
-    private void setTitle(String title) {
-        if(title == null || title.isBlank()) {
+    public void setTitle(String title) {
+        if (title == null || title.isBlank()) {
             throw new IllegalArgumentException("Game title should not be null!");
         }
         this.title = title.trim();
@@ -144,7 +149,7 @@ public class Game {
     }
 
     public void setPublisher(Publisher publisher) {
-        if(publisher == null) {
+        if (publisher == null) {
             throw new IllegalArgumentException("Publisher should not be Null!");
         }
         this.publisher = publisher;
@@ -155,7 +160,7 @@ public class Game {
     }
 
     private void setTrailerURLId(String trailerURLId) {
-        if(trailerURLId.isBlank()) {
+        if (trailerURLId.isBlank()) {
             this.trailerURLId = null;
             return;
         }
@@ -167,7 +172,7 @@ public class Game {
     }
 
     private void setThumbnailUrl(String thumbnailUrl) {
-        if(thumbnailUrl.isBlank()){
+        if (thumbnailUrl.isBlank()) {
             this.thumbnailUrl = null;
             return;
         }
@@ -179,11 +184,11 @@ public class Game {
     }
 
     private void setSize(Double size) {
-        if(size == null) {
+        if (size == null) {
             this.size = null;
             return;
         }
-        if(size <= 0) {
+        if (size <= 0) {
             throw new IllegalArgumentException("Game size should be positive number!");
         }
         this.size = size;
@@ -194,11 +199,11 @@ public class Game {
     }
 
     private void setPrice(BigDecimal price) {
-        if(price == null) {
+        if (price == null) {
             throw new IllegalArgumentException("Game price should not be null!");
         }
 
-        if(price.max(BigDecimal.ZERO).equals(BigDecimal.ZERO)) {
+        if (price.max(BigDecimal.ZERO).equals(BigDecimal.ZERO)) {
             throw new IllegalArgumentException("Game price should be positive number!");
         }
 
@@ -210,7 +215,7 @@ public class Game {
     }
 
     private void setDescription(String description) {
-        if(description != null && description.isBlank()) {
+        if (description != null && description.isBlank()) {
             this.description = null;
             return;
         }
@@ -248,5 +253,26 @@ public class Game {
         return getTitle().hashCode();
     }
 
+    @Override
+    public String toString() {
+        return "Game id: " + id +
+                ", " + title +
+                ", Publisher: " + publisher +
+                ", Release Date: " + releaseDate +
+                ", Price: " + price +
+                (description == null ? "" : (", Description: " + description));
+    }
 
+    public void copy(Game game) {
+        setId(game.getId());
+        setTitle(game.getTitle());
+        setPublisher(game.getPublisher());
+        setTrailerURLId(game.getTrailerURLId());
+        setThumbnailUrl(game.getThumbnailUrl());
+        setSize(game.getSize());
+        setPrice(game.getPrice());
+        setDescription(game.getDescription());
+        setReleaseDate(game.getReleaseDate());
+        this.purchasable = game.getPurchasable();
+    }
 }

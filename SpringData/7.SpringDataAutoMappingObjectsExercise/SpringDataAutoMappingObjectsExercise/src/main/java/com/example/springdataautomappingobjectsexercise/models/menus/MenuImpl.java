@@ -19,12 +19,12 @@ public abstract class MenuImpl implements Menu {
     }
 
     public MenuType execute() {
-        this.display();
-        MenuOption menu = choseMenuOption();
+        this.display(menuOptions);
+        MenuOption menu = choseMenuOption(menuOptions);
         return this.executeMenuOption(menu);
     }
 
-    protected void display() {
+    protected void display(MenuOption[] menuOptions) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(MenuDelimiter.LONG_LINE).append(System.lineSeparator());
         stringBuilder.append(MenuDelimiter.SHORT_LINE).append(" Menu ").append(MenuDelimiter.SHORT_LINE).append(System.lineSeparator());
@@ -43,7 +43,7 @@ public abstract class MenuImpl implements Menu {
 
     protected abstract MenuType executeMenuOption(MenuOption menu);
 
-    protected MenuOption choseMenuOption() {
+    protected MenuOption choseMenuOption(MenuOption[] menuOptions) {
         MenuOption menuOption = null;
 
         while (menuOption == null) {

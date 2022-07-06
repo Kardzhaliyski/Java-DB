@@ -10,12 +10,16 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.IllegalFormatException;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
     private final ReaderService reader;
     private final PublisherService publisherService;
+    private Map<Long,Game> games;
 
     public GameServiceImpl(GameRepository gameRepository, ReaderService reader, PublisherService publisherService) {
         this.gameRepository = gameRepository;
@@ -43,15 +47,6 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void addGame() {
-//        Game game = new Game(
-//                "Title",
-//                "Trailer URLId",
-//                "ThumbnailURL",
-//                3.00,
-//                BigDecimal.ONE,
-//                "Description",
-//                LocalDate.now());
-
         Game.Builder builder = Game.getBuilder();
         setTitle(builder);
         setPublisher(builder);
@@ -65,6 +60,9 @@ public class GameServiceImpl implements GameService {
         Game game = builder.build();
         try {
             save(game);
+            if (games != null) {
+                games.put(game.getId(),game);
+            }
         } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
         }
@@ -72,16 +70,7 @@ public class GameServiceImpl implements GameService {
 
     private void setPublisher(Game.Builder builder) {
 
-        String publisherName = null;
-        while (publisherName == null) {
-            System.out.print("Enter publisher name: ");
-            String input = reader.nextLine();
-            if (input.isBlank()) {
-                System.out.println("Publisher name must not be empty!");
-                continue;
-            }
-            publisherName = input;
-        }
+        String publisherName = publisherService.readName();
 
         Publisher publisher = publisherService.getByName(publisherName);
         if (publisher == null) {
@@ -92,14 +81,19 @@ public class GameServiceImpl implements GameService {
     }
 
     private void setTitle(Game.Builder builder) {
-        while (builder.getTitle() == null) {
-            try {
+        builder.setTitle(readTitle());
+    }
+
+    public String readTitle(){
+        String title = "";
+        while (title.isBlank()) {
                 System.out.print("Enter game title: ");
-                builder.setTitle(reader.nextLine());
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
+                title = reader.nextLine().trim();
+                if(title.isBlank()) {
+                    System.out.println("Title should not be blank");
+                }
         }
+        return title;
     }
 
     private void setTrailerUrlId(Game.Builder builder) {
@@ -169,5 +163,37 @@ public class GameServiceImpl implements GameService {
         }
         LocalDate date = LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         builder.setReleaseDate(date);
+    }
+
+    public void printAllGame() {
+        if (games == null) {
+            getAllGames();
+        }
+
+        String gamesInfo = games.values()
+                .stream()
+                .map(Game::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
+        System.out.println(gamesInfo);
+    }
+
+    @Override
+    public Game getGame(Long id) {
+        if(games != null) {
+            if (games.containsKey(id)) {
+                return games.get(id);
+            }
+        }
+
+        Optional<Game> game = gameRepository.findById(id);
+        return game.orElse(null);
+    }
+
+    private void getAllGames() {
+        Map<Long, Game> games = gameRepository
+                .findAll()
+                .stream()
+                .collect(Collectors.toMap(Game::getId, k -> k));
+        this.games = games;
     }
 }
