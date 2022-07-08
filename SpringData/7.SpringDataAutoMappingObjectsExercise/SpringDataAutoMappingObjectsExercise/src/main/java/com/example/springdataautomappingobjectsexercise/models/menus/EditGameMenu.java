@@ -18,7 +18,6 @@ public class EditGameMenu extends MenuImpl {
     private final PublisherService publisherService;
     private Game game;
     private Game gameCopy;
-    private StringBuilder stringBuilder;
     @Autowired
     private final static MenuOption[] MENU_OPTIONS = EditGameMenuOption.values();
 
@@ -26,7 +25,6 @@ public class EditGameMenu extends MenuImpl {
         super(reader, MENU_OPTIONS);
         this.gameService = gameService;
         this.publisherService = publisherService;
-        this.stringBuilder = new StringBuilder();
     }
 
     @Override
@@ -34,13 +32,6 @@ public class EditGameMenu extends MenuImpl {
         switch ((EditGameMenuOption) menu) {
             case EDIT_TITLE:
                 this.gameCopy.setTitle(gameService.readTitle());
-                stringBuilder
-                        .append("Title changed from '")
-                        .append(game.getTitle())
-                        .append("' To")
-                        .append(gameCopy.getTitle())
-                        .append(System.lineSeparator());
-
                 break;
             case EDIT_PUBLISHER:
                 String name = publisherService.readName();
@@ -51,11 +42,6 @@ public class EditGameMenu extends MenuImpl {
                 }
 
                 this.gameCopy.setPublisher(publisher);
-                stringBuilder.append("Publisher changed from ")
-                        .append(game.getPublisher().getName())
-                        .append(" to ")
-                        .append(gameCopy.getPublisher().getName())
-                        .append(System.lineSeparator());
                 break;
             case EDIT_TRAILER_URL_ID:
                 break;
@@ -72,17 +58,21 @@ public class EditGameMenu extends MenuImpl {
             case EDIT_PURCHASABLE:
                 break;
             case SAVE:
-                game.copy(gameCopy);
-                gameService.save(this.game);
+                String differences = game.differences(gameCopy);
+                if(!differences.isBlank())
+                {
+                    game.copy(gameCopy);
+                    gameService.save(this.game);
+                    System.out.println(differences);
+                } else {
+                    System.out.println("No changes made.");
+                }
                 this.game = null;
                 this.gameCopy = null;
-                System.out.println(stringBuilder);
-                stringBuilder.setLength(0);
                 return MenuType.ADMIN_MENU;
             case CANCEL:
                 this.game = null;
                 this.gameCopy = null;
-                stringBuilder.setLength(0);
                 return MenuType.ADMIN_MENU;
         }
         return MenuType.EDIT_GAME_MENU;

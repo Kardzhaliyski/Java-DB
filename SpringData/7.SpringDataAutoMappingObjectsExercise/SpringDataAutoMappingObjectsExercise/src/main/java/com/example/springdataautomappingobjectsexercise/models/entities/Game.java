@@ -5,9 +5,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity(name = "games")
-public class Game{
+public class Game {
 
-    public static class Builder{
+    public static class Builder {
         private final Game game;
 
         private Builder() {
@@ -274,5 +274,80 @@ public class Game{
         setDescription(game.getDescription());
         setReleaseDate(game.getReleaseDate());
         this.purchasable = game.getPurchasable();
+    }
+
+    public String differences(Game game) {
+        StringBuilder sb = new StringBuilder();
+        if (!this.getTitle().equals(game.getTitle())) {
+            sb.append(String.format(
+                            "Title \"%s\" changed to \"%s\"",
+                            this.getTitle(),
+                            game.getTitle()))
+                    .append(System.lineSeparator());
+        }
+        if (!this.getPublisher().equals(game.getPublisher())) {
+            sb.append(String.format(
+                            "Publisher \"%s\" changed to \"%s\"",
+                            this.getPublisher().getName(),
+                            game.getPublisher().getName()))
+                    .append(System.lineSeparator());
+        }
+        if (!this.getTrailerURLId().equals(game.getTrailerURLId())) {
+            sb.append(String.format(
+                            "Trailer URL Id \"%s\" changed to \"%s\"",
+                            this.getTrailerURLId(),
+                            game.getTrailerURLId()))
+                    .append(System.lineSeparator());
+        }
+
+        if (!this.getThumbnailUrl().equals(game.getThumbnailUrl())) {
+            sb.append(String.format(
+                            "Trailer thumbnail URL \"%s\" changed to \"%s\"",
+                            this.getThumbnailUrl(),
+                            game.getThumbnailUrl()))
+                    .append(System.lineSeparator());
+        }
+
+        if (!this.getSize().equals(game.getSize())) {
+            sb.append(String.format(
+                            "Size \"%s\" changed to \"%s\"",
+                            this.getSize(),
+                            game.getSize()))
+                    .append(System.lineSeparator());
+        }
+
+        if (!this.getPrice().equals(game.getPrice())) {
+            sb.append(String.format(
+                            "Price \"%s\" changed to \"%s\"",
+                            this.getPrice(),
+                            game.getPrice()))
+                    .append(System.lineSeparator());
+        }
+
+        if (this.getDescription() != null &&
+                !this.getDescription().equals(game.getDescription())) {
+            sb.append(String.format(
+                            "Description \"%s\" changed to \"%s\"",
+                            this.getDescription(),
+                            game.getDescription()))
+                    .append(System.lineSeparator());
+        }
+        if (!this.getReleaseDate().equals(game.getReleaseDate())) {
+            sb.append(String.format(
+                            "Release Date \"%s\" changed to \"%s\"",
+                            this.getReleaseDate(),
+                            game.getReleaseDate()))
+                    .append(System.lineSeparator());
+        }
+        if (!this.getPurchasable().equals(game.getPurchasable())) {
+            sb.append(String.format(
+                            "Purchasable \"%s\" changed to \"%s\"",
+                            this.getPurchasable(),
+                            game.getPurchasable()))
+                    .append(System.lineSeparator());
+        }
+
+        return sb.toString().trim();
+
     }
 }
