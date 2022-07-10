@@ -12,30 +12,36 @@ import com.example.springdataautomappingobjectsexercise.services.ReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.Set;
+
 @Component
 public class EditGameMenu extends MenuImpl {
     private final GameService gameService;
     private final PublisherService publisherService;
     private Game game;
-    private Game gameCopy;
+    private Game.Builder gameCopy;
+    private final Validator validator;
     @Autowired
     private final static MenuOption[] MENU_OPTIONS = EditGameMenuOption.values();
 
-    protected EditGameMenu(ReaderService reader, GameService gameService, PublisherService publisherService) {
+    protected EditGameMenu(ReaderService reader, GameService gameService, PublisherService publisherService, Validator validator) {
         super(reader, MENU_OPTIONS);
         this.gameService = gameService;
         this.publisherService = publisherService;
+        this.validator = validator;
     }
 
     @Override
     protected MenuType executeMenuOption(MenuOption menu) {
         switch ((EditGameMenuOption) menu) {
-            case EDIT_TITLE:
+            case EDIT_TITLE: {
                 this.gameCopy.setTitle(gameService.readTitle());
                 break;
-            case EDIT_PUBLISHER:
+            }
+            case EDIT_PUBLISHER: {
                 String name = publisherService.readName();
-
                 Publisher publisher = publisherService.getByName(name);
                 if (publisher == null) {
                     publisher = publisherService.newPublisher(name);
@@ -43,40 +49,62 @@ public class EditGameMenu extends MenuImpl {
 
                 this.gameCopy.setPublisher(publisher);
                 break;
-            case EDIT_TRAILER_URL_ID:
+            }
+            case EDIT_TRAILER_URL_ID: {
+                this.gameCopy.setTrailerUrlId(gameService.readTrailerUrlId());
                 break;
+            }
             case EDIT_THUMBNAIL_URL:
+                this.gameCopy.setThumbnailUrl(gameService.readThumbnailUrl());
                 break;
             case EDIT_SIZE:
+                this.gameCopy.setSize(gameService.readGameSize());
                 break;
             case EDIT_PRICE:
+                this.gameCopy.setPrice(gameService.readPrice());
                 break;
             case EDIT_DESCRIPTION:
+                this.gameCopy.setDescription(gameService.readDescription());
                 break;
             case EDIT_RELEASE_DATE:
+                this.gameCopy.setReleaseDate(gameService.readReleaseDate());
                 break;
             case EDIT_PURCHASABLE:
+                System.out.print("Is game purchasable(y/n): ");
+                if (reader.nextLine().trim().equalsIgnoreCase("y")) {
+                    this.gameCopy.setPurchasable(true);
+                } else if(reader.nextLine().trim().equalsIgnoreCase("n")){
+                    this.gameCopy.setPurchasable(false);
+                }
                 break;
             case SAVE:
-                String differences = game.differences(gameCopy);
-                if(!differences.isBlank())
-                {
-                    game.copy(gameCopy);
-                    gameService.save(this.game);
+                Game gameCopyBuild = gameCopy.build();
+                Set<ConstraintViolation<Game>> violations = validator.validate(gameCopyBuild);
+                if(violations.size() != 0) {
+                    System.out.println("Invalid game object! Changes has not been saved!");
+                    violations.forEach(v -> System.out.println(v.getMessage()));
+                    return exitEditor();
+                }
+                String differences = game.differences(gameCopyBuild);
+                if (!differences.isBlank()) {
+                    gameService.save(gameCopyBuild);
                     System.out.println(differences);
                 } else {
                     System.out.println("No changes made.");
                 }
-                this.game = null;
-                this.gameCopy = null;
-                return MenuType.ADMIN_MENU;
+                return exitEditor();
             case CANCEL:
-                this.game = null;
-                this.gameCopy = null;
-                return MenuType.ADMIN_MENU;
+                return exitEditor();
         }
         return MenuType.EDIT_GAME_MENU;
     }
+
+    private MenuType exitEditor() {
+        this.game = null;
+        this.gameCopy = null;
+        return MenuType.ADMIN_MENU;
+    }
+
 
     @Override
     public MenuType execute() {
@@ -100,7 +128,11 @@ public class EditGameMenu extends MenuImpl {
             }
 
             this.game = gameService.getGame(id);
-            this.gameCopy = new Game(this.game);
+            if(game != null) {
+                this.gameCopy = Game.getBuilder().duplicate(game);
+            } else {
+                System.out.println("No game with id: " + id);
+            }
         }
     }
 }

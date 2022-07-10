@@ -6,12 +6,16 @@ import com.example.springdataautomappingobjectsexercise.repositories.GameReposit
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.IllegalFormatException;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,12 +23,14 @@ public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
     private final ReaderService reader;
     private final PublisherService publisherService;
-    private Map<Long,Game> games;
+    private final Validator validator;
+    private Map<Long, Game> games;
 
-    public GameServiceImpl(GameRepository gameRepository, ReaderService reader, PublisherService publisherService) {
+    public GameServiceImpl(GameRepository gameRepository, ReaderService reader, PublisherService publisherService, Validator validator) {
         this.gameRepository = gameRepository;
         this.reader = reader;
         this.publisherService = publisherService;
+        this.validator = validator;
     }
 
     @Override
@@ -43,6 +49,7 @@ public class GameServiceImpl implements GameService {
             throw new IllegalStateException("Game already exists in the database!");
         }
         gameRepository.save(game);
+        games.put(game.getId(), game);
     }
 
     @Override
@@ -61,7 +68,7 @@ public class GameServiceImpl implements GameService {
         try {
             save(game);
             if (games != null) {
-                games.put(game.getId(),game);
+                games.put(game.getId(), game);
             }
         } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
@@ -84,30 +91,44 @@ public class GameServiceImpl implements GameService {
         builder.setTitle(readTitle());
     }
 
-    public String readTitle(){
+    public String readTitle() {
         String title = "";
         while (title.isBlank()) {
-                System.out.print("Enter game title: ");
-                title = reader.nextLine().trim();
-                if(title.isBlank()) {
-                    System.out.println("Title should not be blank");
-                }
+            System.out.print("Enter game title: ");
+            String input = reader.nextLine().trim();
+            Set<ConstraintViolation<Game>> violations = validator.validateValue(Game.class, "title", input);
+            if (violations.size() == 0) {
+                title = input;
+                break;
+            } else {
+                violations.forEach(v -> System.out.println(v.getMessage()));
+            }
         }
         return title;
     }
 
     private void setTrailerUrlId(Game.Builder builder) {
-        System.out.print("Enter trailer URL id: ");
-        String input = reader.nextLine();
+        String input = readTrailerUrlId();
         if (input.isBlank()) {
             return;
         }
         builder.setTrailerUrlId(input);
     }
 
-    private void setThumbnailUrl(Game.Builder builder) {
+    @Override
+    public String readTrailerUrlId() {
+        System.out.print("Enter trailer URL id: ");
+        return reader.nextLine().trim();
+    }
+
+    @Override
+    public String readThumbnailUrl() {
         System.out.print("Enter thumbnail URL: ");
-        String input = reader.nextLine();
+        return reader.nextLine().trim();
+    }
+
+    private void setThumbnailUrl(Game.Builder builder) {
+        String input = readThumbnailUrl();
         if (input.isBlank()) {
             return;
         }
@@ -115,53 +136,95 @@ public class GameServiceImpl implements GameService {
     }
 
     private void setSize(Game.Builder builder) {
-        System.out.print("Enter size: ");
-        while (builder.getSize() == null) {
+        builder.setSize(readGameSize());
+    }
+
+    @Override
+    public Double readGameSize() {
+        while (true) {
+            Double size;
+            System.out.print("Enter size: ");
             String input = reader.nextLine();
             if (input.isBlank()) {
-                return;
+                return null;
             }
             try {
-
-                builder.setSize(Double.parseDouble(input));
+                size = Double.parseDouble(input);
             } catch (IllegalFormatException e) {
                 System.out.println("Illegal game size format: " + input);
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                continue;
+            }
+
+            Set<ConstraintViolation<Game>> violations = validator.validateValue(Game.class, "size", size);
+            if (violations.size() == 0) {
+                return size;
+            } else {
+                violations.forEach(v -> System.out.println(v.getMessage()));
             }
         }
+    }
+
+    @Override
+    public BigDecimal readPrice() {
+        while (true) {
+            System.out.print("Enter price: ");
+            BigDecimal price = null;
+
+            try {
+                price = new BigDecimal(reader.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Wrong number format for game price!");
+            }
+
+            Set<ConstraintViolation<Game>> violations = validator.validateValue(Game.class, "price", price);
+            if (violations.size() == 0) {
+                return price;
+            }
+
+            violations.forEach(v -> System.out.println(v.getMessage()));
+        }
+    }
+
+    @Override
+    public String readDescription() {
+        System.out.print("Enter description: ");
+        return reader.nextLine().trim();
     }
 
     private void setPrice(Game.Builder builder) {
-        while (builder.getPrice() == null) {
-            System.out.print("Enter price: ");
-            try {
-                BigDecimal price = new BigDecimal(reader.nextLine().trim());
-                builder.setPrice(price);
-            } catch (NumberFormatException e) {
-                System.out.println("Wrong number format for game price!");
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-        }
+        builder.setPrice(readPrice());
     }
 
     private void setDescription(Game.Builder builder) {
-        System.out.print("Enter description: ");
-        String input = reader.nextLine();
+        String input = readDescription();
         if (input.isBlank()) {
             return;
         }
         builder.setDescription(input);
     }
 
+    @Override
+    public LocalDate readReleaseDate() {
+        while (true) {
+            System.out.print("Enter release date (format: dd-MM-yyyy) or leave blank: ");
+            String input = reader.nextLine();
+            if (input.isBlank()) {
+                return null;
+            }
+
+            try {
+                return LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format!");
+            }
+        }
+    }
+
     private void setReleaseDate(Game.Builder builder) {
-        System.out.print("Enter release date (format: dd-MM-yyyy): ");
-        String input = reader.nextLine();
-        if (input.isBlank()) {
+        LocalDate date = readReleaseDate();
+        if (date == null) {
             return;
         }
-        LocalDate date = LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         builder.setReleaseDate(date);
     }
 
@@ -179,7 +242,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game getGame(Long id) {
-        if(games != null) {
+        if (games != null) {
             if (games.containsKey(id)) {
                 return games.get(id);
             }

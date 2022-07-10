@@ -1,15 +1,19 @@
 package com.example.springdataautomappingobjectsexercise.models.entities;
 
+import org.springframework.validation.annotation.Validated;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
+@Validated
 @Entity(name = "pubishers")
 public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Publisher name should not be Null or empty!")
     @Column(nullable = false, unique = true)
     private String name;
     @OneToMany(mappedBy = "publisher")
@@ -36,9 +40,9 @@ public class Publisher {
     }
 
     private void setName(String name) {
-        if(name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Publisher name should not be Null or empty!");
-        }
+//        if(name == null || name.isBlank()) {
+//            throw new IllegalArgumentException("Publisher name should not be Null or empty!");
+//        }
         this.name = name;
     }
 

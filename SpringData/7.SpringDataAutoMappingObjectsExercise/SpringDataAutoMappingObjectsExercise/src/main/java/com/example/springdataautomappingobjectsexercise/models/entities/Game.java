@@ -1,9 +1,16 @@
 package com.example.springdataautomappingobjectsexercise.models.entities;
 
+import org.hibernate.validator.constraints.Length;
+import org.springframework.validation.annotation.Validated;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Validated
 @Entity(name = "games")
 public class Game {
 
@@ -26,6 +33,20 @@ public class Game {
             }
 
             return game;
+        }
+
+        public Game.Builder duplicate(Game game) {
+            this.game.setId(game.getId());
+            setTitle(game.getTitle());
+            setPublisher(game.getPublisher());
+            setTrailerUrlId(game.getTrailerURLId());
+            setThumbnailUrl(game.getThumbnailUrl());
+            setSize(game.getSize());
+            setPrice(game.getPrice());
+            setDescription(game.getDescription());
+            setReleaseDate(game.getReleaseDate());
+            this.game.purchasable = game.getPurchasable();
+            return this;
         }
 
         public Builder setTitle(String title) {
@@ -75,6 +96,10 @@ public class Game {
             game.setReleaseDate(releaseDate);
             return this;
         }
+        public Builder setPurchasable(Boolean purchasable) {
+            game.setPurchasable(purchasable);
+            return this;
+        }
 
         public Double getSize() {
             return game.getSize();
@@ -84,21 +109,29 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotBlank(message = "Title should not be blank!")
+    @Length(min = 2, message = "Game title should be at least 2 symbols!")
     @Column(nullable = false, unique = true)
     private String title;
+    @NotNull(message = "Publisher should not be null!")
     @ManyToOne(optional = false)
     private Publisher publisher;
+    @Length(min = 11, max = 11, message = "Trailer url id should be 11 symbols long!")
     @Column(name = "trailer_url_id", length = 11)
     private String trailerURLId;
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;
+    @NotNull(message = "Size should not be null!")
+    @Positive(message = "Size should be positive number!")
     private Double size;
+    @NotNull(message = "Price should not be null!")
+    @Positive(message = "Price should be positive number!")
     @Column(nullable = false)
     private BigDecimal price;
     private String description;
     @Column(name = "release_date")
     private LocalDate releaseDate;
+    @NotNull
     private Boolean purchasable;
 
     protected Game() {
@@ -117,9 +150,6 @@ public class Game {
         this.purchasable = true;
     }
 
-    public Game(Game game) {
-        copy(game);
-    }
 
     public static Builder getBuilder() {
         return new Builder();
@@ -137,10 +167,10 @@ public class Game {
         return title;
     }
 
-    public void setTitle(String title) {
-        if (title == null || title.isBlank()) {
-            throw new IllegalArgumentException("Game title should not be null!");
-        }
+    private void setTitle(String title) {
+//        if (title == null || title.isBlank()) {
+//            throw new IllegalArgumentException("Game title should not be null!");
+//        }
         this.title = title.trim();
     }
 
@@ -149,9 +179,9 @@ public class Game {
     }
 
     public void setPublisher(Publisher publisher) {
-        if (publisher == null) {
-            throw new IllegalArgumentException("Publisher should not be Null!");
-        }
+//        if (publisher == null) {
+//            throw new IllegalArgumentException("Publisher should not be Null!");
+//        }
         this.publisher = publisher;
     }
 
@@ -184,13 +214,13 @@ public class Game {
     }
 
     private void setSize(Double size) {
-        if (size == null) {
-            this.size = null;
-            return;
-        }
-        if (size <= 0) {
-            throw new IllegalArgumentException("Game size should be positive number!");
-        }
+//        if (size == null) {
+//            this.size = null;
+//            return;
+//        }
+//        if (size <= 0) {
+//            throw new IllegalArgumentException("Game size should be positive number!");
+//        }
         this.size = size;
     }
 
@@ -199,13 +229,13 @@ public class Game {
     }
 
     private void setPrice(BigDecimal price) {
-        if (price == null) {
-            throw new IllegalArgumentException("Game price should not be null!");
-        }
-
-        if (price.max(BigDecimal.ZERO).equals(BigDecimal.ZERO)) {
-            throw new IllegalArgumentException("Game price should be positive number!");
-        }
+//        if (price == null) {
+//            throw new IllegalArgumentException("Game price should not be null!");
+//        }
+//
+//        if (price.max(BigDecimal.ZERO).equals(BigDecimal.ZERO)) {
+//            throw new IllegalArgumentException("Game price should be positive number!");
+//        }
 
         this.price = price;
     }
@@ -261,19 +291,6 @@ public class Game {
                 ", Release Date: " + releaseDate +
                 ", Price: " + price +
                 (description == null ? "" : (", Description: " + description));
-    }
-
-    public void copy(Game game) {
-        setId(game.getId());
-        setTitle(game.getTitle());
-        setPublisher(game.getPublisher());
-        setTrailerURLId(game.getTrailerURLId());
-        setThumbnailUrl(game.getThumbnailUrl());
-        setSize(game.getSize());
-        setPrice(game.getPrice());
-        setDescription(game.getDescription());
-        setReleaseDate(game.getReleaseDate());
-        this.purchasable = game.getPurchasable();
     }
 
     public String differences(Game game) {
