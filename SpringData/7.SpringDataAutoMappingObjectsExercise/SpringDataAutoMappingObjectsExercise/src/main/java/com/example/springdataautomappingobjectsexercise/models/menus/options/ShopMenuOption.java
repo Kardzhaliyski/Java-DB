@@ -1,7 +1,7 @@
 package com.example.springdataautomappingobjectsexercise.models.menus.options;
 
-public enum ShopOption implements MenuOption {
-    CHECK_CART,
+public enum ShopMenuOption implements MenuOption {
+    SHOW_CART,
     ADD_GAME_TO_CART,
     REMOVE_GAME_FROM_CART,
     ORDER;

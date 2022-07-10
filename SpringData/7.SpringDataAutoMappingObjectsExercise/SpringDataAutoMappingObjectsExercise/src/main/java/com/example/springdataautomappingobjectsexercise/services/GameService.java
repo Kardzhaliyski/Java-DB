@@ -37,4 +37,5 @@ public interface GameService {
     boolean deleteById(Long id);
 
     void printGameDetails(Game game);
+
 }

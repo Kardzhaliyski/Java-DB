@@ -1,6 +1,8 @@
 package com.example.springdataautomappingobjectsexercise.services;
 
+import com.example.springdataautomappingobjectsexercise.models.entities.Game;
 import com.example.springdataautomappingobjectsexercise.models.entities.User;
+import com.example.springdataautomappingobjectsexercise.models.menus.enums.MenuDelimiter;
 import com.example.springdataautomappingobjectsexercise.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -41,13 +43,13 @@ public class UserServiceImpl implements UserService {
         setPassword(builder);
         setFullName(builder);
         User user = builder.build();
-
-        try {
-            save(user);
-            System.out.println("Registration success!");
-        } catch (IllegalStateException e) {
+        if (userRepository.existsByEmail(user.getEmail())) {
             System.out.println("User with this email already exists!");
+            return;
         }
+
+        save(user);
+        System.out.println("Registration success!");
     }
 
     @Override
@@ -91,16 +93,26 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private void save(User user) {
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new IllegalStateException("User already exists in database with this email address!");
-        } else {
+    @Override
+    public void save(User user) {
             userRepository.save(user);
-        }
     }
 
     @Override
     public User getUser() {
         return user;
+    }
+
+    @Override
+    public void printOwnedGames() {
+        if (user.getOwnedGames() == null || user.getOwnedGames().size() == 0) {
+            System.out.println("No owned games.");
+            return;
+        }
+        System.out.println(MenuDelimiter.LONG_LINE);
+        System.out.println("Owned games:");
+        for (Game game : user.getOwnedGames().values()) {
+            System.out.println(game);
+        }
     }
 }

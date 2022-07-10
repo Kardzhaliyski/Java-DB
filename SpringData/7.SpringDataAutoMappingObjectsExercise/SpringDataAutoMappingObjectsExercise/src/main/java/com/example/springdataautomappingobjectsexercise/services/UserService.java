@@ -9,4 +9,8 @@ public interface UserService {
     void logout();
 
     User getUser();
+
+    void printOwnedGames();
+
+    void save(User user);
 }

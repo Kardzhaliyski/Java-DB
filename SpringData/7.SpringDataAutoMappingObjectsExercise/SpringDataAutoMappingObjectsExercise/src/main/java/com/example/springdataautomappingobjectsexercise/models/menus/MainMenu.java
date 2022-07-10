@@ -5,6 +5,7 @@ import com.example.springdataautomappingobjectsexercise.models.menus.enums.MenuT
 import com.example.springdataautomappingobjectsexercise.models.menus.options.MainMenuOption;
 import com.example.springdataautomappingobjectsexercise.models.menus.options.MenuOption;
 import com.example.springdataautomappingobjectsexercise.services.GameService;
+import com.example.springdataautomappingobjectsexercise.services.OrderService;
 import com.example.springdataautomappingobjectsexercise.services.ReaderService;
 import com.example.springdataautomappingobjectsexercise.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,14 @@ public class MainMenu extends MenuImpl {
     private static final MenuOption[] MENU_OPTIONS = MainMenuOption.values();
     private UserService userService;
     private final GameService gameService;
+    private final OrderService orderService;
 
     @Autowired
-    protected MainMenu(ReaderService reader, UserService userService, GameService gameService) {
+    protected MainMenu(ReaderService reader, UserService userService, GameService gameService, OrderService orderService) {
         super(reader, MENU_OPTIONS);
         this.userService = userService;
         this.gameService = gameService;
+        this.orderService = orderService;
     }
 
     @Override
@@ -28,7 +31,8 @@ public class MainMenu extends MenuImpl {
         switch ((MainMenuOption) menu) {
 
             case SHOP:
-                break;
+                orderService.startOrder(userService.getUser());
+                return MenuType.SHOP_MENU;
             case SHOW_ALL_GAMES:
                 gameService.printAllGame();
                 break;
@@ -38,6 +42,7 @@ public class MainMenu extends MenuImpl {
                 gameService.printGameDetails(game);
                 break;
             case SHOW_OWNED_GAMES:
+                userService.printOwnedGames();
                 break;
             case LOGOUT:
                 userService.logout();

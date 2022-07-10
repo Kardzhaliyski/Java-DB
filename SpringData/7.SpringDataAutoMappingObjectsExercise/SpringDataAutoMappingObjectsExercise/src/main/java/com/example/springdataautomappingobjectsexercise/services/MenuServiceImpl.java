@@ -13,14 +13,16 @@ public class MenuServiceImpl implements MenuService {
     private final Menu mainMenu;
     private final Menu editGameMenu;
     private final Menu deleteGameMenu;
+    private final Menu shopMenu;
 
     @Autowired
-    public MenuServiceImpl(StartMenu startMenu, AdminMenu adminMenu, MainMenu mainMenu, EditGameMenu editGameMenu, Menu deleteGameMenu) {
+    public MenuServiceImpl(StartMenu startMenu, AdminMenu adminMenu, MainMenu mainMenu, EditGameMenu editGameMenu, DeleteGameMenu deleteGameMenu, ShopMenu shopMenu) {
         this.startMenu = startMenu;
         this.adminMenu = adminMenu;
         this.mainMenu = mainMenu;
         this.editGameMenu = editGameMenu;
         this.deleteGameMenu = deleteGameMenu;
+        this.shopMenu = shopMenu;
         setMenu(startMenu);
     }
 
@@ -57,6 +59,8 @@ public class MenuServiceImpl implements MenuService {
                 return editGameMenu;
             case DELETE_GAME_MENU:
                 return deleteGameMenu;
+            case SHOP_MENU:
+                return shopMenu;
         }
         return null;
     }

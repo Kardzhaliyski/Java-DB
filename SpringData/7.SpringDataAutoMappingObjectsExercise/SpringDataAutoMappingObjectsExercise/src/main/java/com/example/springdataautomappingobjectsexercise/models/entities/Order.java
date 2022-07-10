@@ -1,9 +1,8 @@
 package com.example.springdataautomappingobjectsexercise.models.entities;
 
 import javax.persistence.*;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Entity(name = "orders")
 public class Order {
@@ -13,7 +12,7 @@ public class Order {
     @ManyToOne(optional = false)
     private User user;
     @ManyToMany
-    private Set<Game> games;
+    private Map<Long, Game> games;
     @Column(nullable = false)
     private Boolean finished;
 
@@ -22,7 +21,7 @@ public class Order {
 
     public Order(User user) {
         this.user = user;
-        this.games = new LinkedHashSet<>();
+        this.games = new LinkedHashMap<>();
         this.finished = false;
     }
 
@@ -45,8 +44,8 @@ public class Order {
         this.user = user;
     }
 
-    public Set<Game> getGames() {
-        return Collections.unmodifiableSet(games);
+    public Map<Long, Game> getGames() {
+        return Collections.unmodifiableMap(games);
     }
 
     public void addGame(Game game) {
@@ -54,18 +53,25 @@ public class Order {
             throw new IllegalArgumentException("Game must not be null!");
         }
 
-        if (games.contains(game)) {
+        if (games.containsKey(game.getId())) {
             throw new IllegalArgumentException("Game is already in the order list!");
         }
 
-        games.add(game);
+        games.put(game.getId(), game);
     }
+    public void removeGame(Long id) {
+        games.remove(id);
+     }
 
     public Boolean getFinished() {
         return finished;
     }
 
-    private void setFinished() {
+    public void setFinished() {
         this.finished = true;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return this.games.values().stream().map(Game::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
     }
 }

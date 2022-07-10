@@ -1,9 +1,7 @@
 package com.example.springdataautomappingobjectsexercise.models.entities;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Entity(name = "users")
 public class User {
@@ -74,13 +72,13 @@ public class User {
     @JoinTable(name = "user_game",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "game_id", referencedColumnName = "id"))
-    private List<Game> ownedGames;
+    private final Map<Long, Game> ownedGames;
 
     @Column(name = "is_admin", nullable = false)
     private Boolean isAdmin;
 
     protected User() {
-        this.ownedGames = new ArrayList<>();
+        this.ownedGames = new LinkedHashMap<>();
         this.isAdmin = false;
     }
 
@@ -142,12 +140,12 @@ public class User {
         this.fullName = fullName.trim();
     }
 
-    public List<Game> getOwnedGames() {
-        return Collections.unmodifiableList(ownedGames);
+    public Map<Long, Game> getOwnedGames() {
+        return Collections.unmodifiableMap(ownedGames);
     }
 
     public void addGameToOwned(Game game) {
-        ownedGames.add(game);
+        ownedGames.put(game.getId(), game);
     }
 
     public Boolean isAdmin() {
@@ -158,13 +156,13 @@ public class User {
         isAdmin = admin;
     }
 
-    private boolean checkIfOwn(Game game) {
-        return ownedGames.contains(game);
-    }
-
     @Override
     public String toString() {
         return "User: " + fullName + " Email: " + email;
+    }
+
+    public boolean ownGame(Long id) {
+        return ownedGames.containsKey(id);
     }
 
 }

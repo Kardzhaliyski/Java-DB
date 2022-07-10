@@ -2,7 +2,6 @@ package com.example.springdataautomappingobjectsexercise.models.menus;
 
 import com.example.springdataautomappingobjectsexercise.models.entities.Game;
 import com.example.springdataautomappingobjectsexercise.models.entities.Publisher;
-import com.example.springdataautomappingobjectsexercise.models.menus.enums.MenuDelimiter;
 import com.example.springdataautomappingobjectsexercise.models.menus.enums.MenuType;
 import com.example.springdataautomappingobjectsexercise.models.menus.options.EditGameMenuOption;
 import com.example.springdataautomappingobjectsexercise.models.menus.options.MenuOption;
@@ -111,6 +110,9 @@ public class EditGameMenu extends MenuImpl {
         if (this.game == null) {
             gameService.printAllGame();
             this.game = gameService.selectGame();
+            if (game != null) {
+                this.gameCopy = Game.getBuilder().duplicate(game);
+            }
         }
         return super.execute();
     }
