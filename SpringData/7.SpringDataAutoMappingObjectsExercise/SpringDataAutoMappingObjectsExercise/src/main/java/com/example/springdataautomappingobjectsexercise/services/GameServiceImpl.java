@@ -229,6 +229,15 @@ public class GameServiceImpl implements GameService {
         return gameRepository.deleteGameById(id) > 0;
     }
 
+    @Override
+    public void printGameDetails(Game game) {
+        System.out.println((" Title: " + game.getTitle() + System.lineSeparator()
+                + MenuDelimiter.SHORT_LINE + "Publisher: " + game.getPublisher().getName() + System.lineSeparator()
+                + MenuDelimiter.SHORT_LINE + "Release date: " + game.getReleaseDate() + System.lineSeparator()
+                + MenuDelimiter.SHORT_LINE + "Description: " + game.getDescription() + System.lineSeparator()
+                + MenuDelimiter.SHORT_LINE + "Size: " + game.getSize() + System.lineSeparator()
+                + MenuDelimiter.SHORT_LINE + "Price: " + game.getPrice()));
+    }
 
 
     private void setReleaseDate(Game.Builder builder) {
@@ -268,11 +277,11 @@ public class GameServiceImpl implements GameService {
                 .collect(Collectors.toMap(Game::getId, k -> k));
     }
 
-    public Game selectGame(){
+    public Game selectGame() {
 
         while (true) {
             System.out.println(MenuDelimiter.LONG_LINE);
-            System.out.print("Chose game id to edit: ");
+            System.out.print("Chose game id: ");
             Long id;
             try {
                 id = Long.parseLong(reader.nextLine());
@@ -282,7 +291,7 @@ public class GameServiceImpl implements GameService {
             }
 
             Optional<Game> game = getGame(id);
-            if(game.isPresent()) {
+            if (game.isPresent()) {
                 return game.get();
             } else {
                 System.out.println("No game with id: " + id);

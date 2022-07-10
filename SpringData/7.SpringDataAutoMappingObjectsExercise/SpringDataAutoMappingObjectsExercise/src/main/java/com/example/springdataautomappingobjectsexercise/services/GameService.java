@@ -35,4 +35,6 @@ public interface GameService {
     LocalDate readReleaseDate();
 
     boolean deleteById(Long id);
+
+    void printGameDetails(Game game);
 }
