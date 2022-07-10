@@ -32,7 +32,7 @@ public class AdminMenu extends MenuImpl {
             case EDIT_GAME:
                 return MenuType.EDIT_GAME_MENU;
             case DELETE_GAME:
-                break;
+                return MenuType.DELETE_GAME_MENU;
             case LOGOUT:
                 userService.logout();
                 return MenuType.START_MENU;

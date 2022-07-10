@@ -73,14 +73,14 @@ public class EditGameMenu extends MenuImpl {
                 System.out.print("Is game purchasable(y/n): ");
                 if (reader.nextLine().trim().equalsIgnoreCase("y")) {
                     this.gameCopy.setPurchasable(true);
-                } else if(reader.nextLine().trim().equalsIgnoreCase("n")){
+                } else if (reader.nextLine().trim().equalsIgnoreCase("n")) {
                     this.gameCopy.setPurchasable(false);
                 }
                 break;
             case SAVE:
                 Game gameCopyBuild = gameCopy.build();
                 Set<ConstraintViolation<Game>> violations = validator.validate(gameCopyBuild);
-                if(violations.size() != 0) {
+                if (violations.size() != 0) {
                     System.out.println("Invalid game object! Changes has not been saved!");
                     violations.forEach(v -> System.out.println(v.getMessage()));
                     return exitEditor();
@@ -110,29 +110,10 @@ public class EditGameMenu extends MenuImpl {
     public MenuType execute() {
         if (this.game == null) {
             gameService.printAllGame();
-            selectGame();
+            this.game = gameService.selectGame();
         }
         return super.execute();
     }
 
-    private void selectGame() {
-        while (this.game == null) {
-            System.out.println(MenuDelimiter.LONG_LINE);
-            System.out.print("Chose game id to edit: ");
-            Long id;
-            try {
-                id = Long.parseLong(reader.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid id format!");
-                continue;
-            }
 
-            this.game = gameService.getGame(id);
-            if(game != null) {
-                this.gameCopy = Game.getBuilder().duplicate(game);
-            } else {
-                System.out.println("No game with id: " + id);
-            }
-        }
-    }
 }

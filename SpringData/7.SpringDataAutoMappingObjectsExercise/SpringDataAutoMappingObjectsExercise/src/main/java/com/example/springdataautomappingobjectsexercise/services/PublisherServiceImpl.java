@@ -6,15 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.Set;
+
 @Service
 public class PublisherServiceImpl implements PublisherService {
     private final PublisherRepository publisherRepository;
     private final ReaderService reader;
+    private final Validator validator;
 
     @Autowired
-    public PublisherServiceImpl(PublisherRepository publisherRepository, ReaderService reader) {
+    public PublisherServiceImpl(PublisherRepository publisherRepository, ReaderService reader, Validator validator) {
         this.publisherRepository = publisherRepository;
         this.reader = reader;
+        this.validator = validator;
     }
 
     @Override
@@ -37,13 +43,6 @@ public class PublisherServiceImpl implements PublisherService {
         publisherRepository.save(publisher);
     }
 
-    @Override
-    public Boolean validName(String name) {
-        if(name == null || name.isBlank()) {
-            return false;
-        }
-        return true;
-    }
 
     @Override
     public Publisher newPublisher(String name) {
@@ -55,9 +54,10 @@ public class PublisherServiceImpl implements PublisherService {
     public String readName() {
         while (true) {
             System.out.print("Enter publisher name: ");
-            String name = reader.nextLine();
-            if (!validName(name)) {
-                System.out.println("Invalid publisher name: " + name);
+            String name = reader.nextLine().trim();
+            Set<ConstraintViolation<Publisher>> violations = validator.validateValue(Publisher.class, "name", name);
+            if (violations.size() > 0) {
+                violations.forEach(v -> System.out.println(v.getMessage()));
                 continue;
             }
             return name;

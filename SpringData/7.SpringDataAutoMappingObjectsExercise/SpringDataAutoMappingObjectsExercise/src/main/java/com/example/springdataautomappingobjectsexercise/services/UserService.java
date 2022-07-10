@@ -7,4 +7,6 @@ public interface UserService {
     User login();
     void register();
     void logout();
+
+    User getUser();
 }

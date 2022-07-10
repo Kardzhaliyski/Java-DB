@@ -5,7 +5,7 @@ import com.example.springdataautomappingobjectsexercise.repositories.UserReposit
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final ReaderService sc;
     private final UserRepository userRepository;
@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService{
             System.out.print("Enter password: ");
             String password = sc.nextLine().trim();
             user = userRepository.findUserByEmailAndPassword(email, password);
-            if(user == null) {
+            if (user == null) {
                 System.out.println("Wrong email or password! Please try again.");
             }
         }
@@ -92,11 +92,15 @@ public class UserServiceImpl implements UserService{
     }
 
     private void save(User user) {
-        if(userRepository.existsByEmail(user.getEmail())){
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw new IllegalStateException("User already exists in database with this email address!");
         } else {
             userRepository.save(user);
         }
     }
 
+    @Override
+    public User getUser() {
+        return user;
+    }
 }

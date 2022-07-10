@@ -8,13 +8,18 @@ import java.time.LocalDate;
 
 public interface GameService {
     boolean existInDatabase(Game game);
+
     boolean existInDatabase(String name, Publisher publisher);
+
     void save(Game game);
 
     void addGame();
+
     void printAllGame();
 
-    Game getGame(Long id);
+    Game selectGame();
+
+    //    Optional<Game> getGame(Long id);
     String readTitle();
 
     String readTrailerUrlId();
@@ -28,4 +33,6 @@ public interface GameService {
     String readDescription();
 
     LocalDate readReleaseDate();
+
+    boolean deleteById(Long id);
 }

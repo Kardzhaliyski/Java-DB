@@ -15,27 +15,17 @@ import java.util.Set;
 public class Runner implements CommandLineRunner {
 
     private final MenuService menuService;
-    private final GameService gameService;
-    private final Validator validator;
 
 
     @Autowired
-    public Runner(MenuService menuService, GameService gameService, Validator validator) {
+    public Runner(MenuService menuService) {
         this.menuService = menuService;
-        this.gameService = gameService;
-        this.validator = validator;
     }
 
 
     @Override
     public void run(String... args) throws Exception {
         menuService.start();
-//        gameService.printAllGame();
-
-//        Set<ConstraintViolation<Game>> constraintViolations = validator.validateValue(Game.class, "size", -5.0);
-//        for (ConstraintViolation<Game> violation : constraintViolations) {
-//            System.out.println(violation);
-//        }
     }
 
 }

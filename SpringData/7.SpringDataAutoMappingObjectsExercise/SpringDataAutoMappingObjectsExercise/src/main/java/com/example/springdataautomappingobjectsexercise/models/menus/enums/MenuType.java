@@ -4,6 +4,7 @@ public enum MenuType {
     START_MENU,
     ADMIN_MENU,
     MAIN_MENU,
-    EDIT_GAME_MENU;
+    EDIT_GAME_MENU,
+    DELETE_GAME_MENU;
 
 }

@@ -2,6 +2,7 @@ package com.example.springdataautomappingobjectsexercise.services;
 
 import com.example.springdataautomappingobjectsexercise.models.entities.Game;
 import com.example.springdataautomappingobjectsexercise.models.entities.Publisher;
+import com.example.springdataautomappingobjectsexercise.models.menus.enums.MenuDelimiter;
 import com.example.springdataautomappingobjectsexercise.repositories.GameRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.IllegalFormatException;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,7 +47,9 @@ public class GameServiceImpl implements GameService {
             throw new IllegalStateException("Game already exists in the database!");
         }
         gameRepository.save(game);
-        games.put(game.getId(), game);
+        if (games != null) {
+            games.put(game.getId(), game);
+        }
     }
 
     @Override
@@ -65,14 +65,17 @@ public class GameServiceImpl implements GameService {
         setReleaseDate(builder);
 
         Game game = builder.build();
-        try {
-            save(game);
-            if (games != null) {
-                games.put(game.getId(), game);
-            }
-        } catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
+        Set<ConstraintViolation<Game>> violations = validator.validate(game);
+        if (violations.size() != 0) {
+            violations.forEach(v -> System.out.println(v.getMessage()));
+            return;
         }
+
+        save(game);
+        if (games != null) {
+            games.put(game.getId(), game);
+        }
+
     }
 
     private void setPublisher(Game.Builder builder) {
@@ -220,6 +223,14 @@ public class GameServiceImpl implements GameService {
         }
     }
 
+    @Override
+    public boolean deleteById(Long id) {
+        games.remove(id);
+        return gameRepository.deleteGameById(id) > 0;
+    }
+
+
+
     private void setReleaseDate(Game.Builder builder) {
         LocalDate date = readReleaseDate();
         if (date == null) {
@@ -240,23 +251,42 @@ public class GameServiceImpl implements GameService {
         System.out.println(gamesInfo);
     }
 
-    @Override
-    public Game getGame(Long id) {
+    private Optional<Game> getGame(Long id) {
         if (games != null) {
             if (games.containsKey(id)) {
-                return games.get(id);
+                return Optional.ofNullable(games.get(id));
             }
         }
 
-        Optional<Game> game = gameRepository.findById(id);
-        return game.orElse(null);
+        return gameRepository.findById(id);
     }
 
     private void getAllGames() {
-        Map<Long, Game> games = gameRepository
+        this.games = gameRepository
                 .findAll()
                 .stream()
                 .collect(Collectors.toMap(Game::getId, k -> k));
-        this.games = games;
+    }
+
+    public Game selectGame(){
+
+        while (true) {
+            System.out.println(MenuDelimiter.LONG_LINE);
+            System.out.print("Chose game id to edit: ");
+            Long id;
+            try {
+                id = Long.parseLong(reader.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid id format!");
+                continue;
+            }
+
+            Optional<Game> game = getGame(id);
+            if(game.isPresent()) {
+                return game.get();
+            } else {
+                System.out.println("No game with id: " + id);
+            }
+        }
     }
 }
