@@ -1,7 +1,9 @@
-package com.example.springdataautomappingobjectsexercise.services;
+package com.example.springdataautomappingobjectsexercise.services.impl;
 
 import com.example.springdataautomappingobjectsexercise.models.entities.Publisher;
 import com.example.springdataautomappingobjectsexercise.repositories.PublisherRepository;
+import com.example.springdataautomappingobjectsexercise.services.PublisherService;
+import com.example.springdataautomappingobjectsexercise.services.ReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;

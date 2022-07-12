@@ -1,9 +1,11 @@
-package com.example.springdataautomappingobjectsexercise.services;
+package com.example.springdataautomappingobjectsexercise.services.impl;
 
 import com.example.springdataautomappingobjectsexercise.models.entities.Game;
 import com.example.springdataautomappingobjectsexercise.models.entities.User;
 import com.example.springdataautomappingobjectsexercise.models.menus.enums.MenuDelimiter;
 import com.example.springdataautomappingobjectsexercise.repositories.UserRepository;
+import com.example.springdataautomappingobjectsexercise.services.ReaderService;
+import com.example.springdataautomappingobjectsexercise.services.UserService;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,7 +1,8 @@
-package com.example.springdataautomappingobjectsexercise.services;
+package com.example.springdataautomappingobjectsexercise.services.impl;
 
 import com.example.springdataautomappingobjectsexercise.models.menus.*;
 import com.example.springdataautomappingobjectsexercise.models.menus.enums.MenuType;
+import com.example.springdataautomappingobjectsexercise.services.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
