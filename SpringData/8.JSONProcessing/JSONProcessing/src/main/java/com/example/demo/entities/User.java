@@ -24,9 +24,12 @@ public class User {
         friends = new HashSet<>();
     }
 
-    public User(String lastName) {
+
+    public User(String firstName, String lastName, Integer age) {
         this();
+        this.firstName = firstName;
         this.lastName = lastName;
+        this.age = age;
     }
 
     public Long getId() {
