@@ -64,15 +64,15 @@ public class Product {
         return Collections.unmodifiableSet(categories);
     }
 
-    public void addCategory(Category category) {
-        categories.add(category);
+    public void addCategories(Set<Category> categories) {
+        this.categories.addAll(categories);
     }
 
     public User getSeller() {
         return seller;
     }
 
-    private void setSeller(User seller) {
+    public void setSeller(User seller) {
         this.seller = seller;
     }
 
@@ -80,7 +80,7 @@ public class Product {
         return buyer;
     }
 
-    private void setBuyer(User buyer) {
+    public void setBuyer(User buyer) {
         this.buyer = buyer;
     }
 }

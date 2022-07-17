@@ -1,7 +1,6 @@
 package com.example.demo.entities;
 
 public class UserImportDTO {
-//    "firstName":null, "lastName":"Peterson","age":72
     private String firstName;
     private String lastName;
     private Integer age;

@@ -1,18 +1,13 @@
 package com.example.demo.services;
 
-import com.example.demo.entities.User;
-import com.example.demo.entities.UserImportDTO;
-import com.example.demo.repositories.UserRepository;
+import com.example.demo.entities.*;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Access;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,17 +15,24 @@ import java.util.stream.Collectors;
 @Service
 public class SeedServiceImpl implements SeedService {
     private final static String USER_SEED_PATH = "src/main/resources/users.json";
-    private final UserRepository userRepository;
+    private final static String CATEGORY_SEED_PATH = "src/main/resources/categories.json";
+    private static final String PRODUCT_SEED_PATH = "src/main/resources/products.json";
+    private final UserService userService;
+    private final CategoryService categoryService;
+    private final ProductService productService;
     private final Gson gson;
     private final ModelMapper modelMapper;
 
-    public SeedServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-         gson = new Gson().newBuilder().setPrettyPrinting().create();
-         modelMapper = new ModelMapper();
-         modelMapper.getConfiguration()
-                 .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE)
-                 .setFieldMatchingEnabled(true);
+    @Autowired
+    public SeedServiceImpl(UserService userService, CategoryService categoryService, ProductService productService) {
+        this.userService = userService;
+        this.categoryService = categoryService;
+        this.productService = productService;
+        gson = new Gson().newBuilder().setPrettyPrinting().create();
+        modelMapper = new ModelMapper();
+        modelMapper.getConfiguration()
+                .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE)
+                .setFieldMatchingEnabled(true);
     }
 
     @Override
@@ -41,18 +43,57 @@ public class SeedServiceImpl implements SeedService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        List<User> users = Arrays.stream(userImportDTOS).map(importDTO -> modelMapper.map(importDTO, User.class))
+
+        List<User> users = Arrays.stream(userImportDTOS)
+                .map(importDTO -> modelMapper.map(importDTO, User.class))
                 .collect(Collectors.toList());
-        users.forEach(userRepository::save);
+        users.forEach(userService::save);
     }
 
     @Override
     public void seedCatorogies() {
+        CategoryImportDTO[] categoryImportDTOS;
+        try (Reader seedFile = new FileReader(CATEGORY_SEED_PATH)) {
+            categoryImportDTOS = gson.fromJson(seedFile, CategoryImportDTO[].class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
+        List<Category> categories = Arrays.stream(categoryImportDTOS)
+                .map(importDTO -> modelMapper.map(importDTO, Category.class))
+                .collect(Collectors.toList());
+
+        categories.forEach(categoryService::save);
     }
 
     @Override
     public void seedProducts() {
+        ProductImportDTO[] productImportDTOS;
+        try (Reader seedFile = new FileReader(PRODUCT_SEED_PATH)) {
+            productImportDTOS = gson.fromJson(seedFile, ProductImportDTO[].class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
+        List<Product> products = Arrays.stream(productImportDTOS)
+                .map(importDTO -> modelMapper.map(importDTO, Product.class))
+                .collect(Collectors.toList());
+        products.forEach(p -> p.setSeller(userService.getRandomUser()));
+        products.forEach(p -> p.addCategories(categoryService.getRandomCategories()));
+        for (int i = 0; i < products.size(); i++) {
+            Product product = products.get(i);
+            product.setSeller(userService.getRandomUser());
+            product.addCategories(categoryService.getRandomCategories());
+            if(i % 2 == 0) {
+                User buyer = userService.getRandomUser();
+                if(buyer != product.getSeller()) {
+                    product.setBuyer(buyer);
+                }
+            }
+
+            productService.save(product);
+        }
     }
+
+
 }
