@@ -29,7 +29,7 @@ public class UserServiceImpl implements com.example.demo.services.UserService {
     @Override
     public User getRandomUser() {
         long userCount = userRepository.count();
-        int randomUserNumber = random.nextInt((int) userCount) + 1;
+        int randomUserNumber = random.nextInt((int) userCount);
         Page<User> userPage = userRepository.findAll(PageRequest.of(randomUserNumber, 1));
 
         if(userPage.hasContent()) {

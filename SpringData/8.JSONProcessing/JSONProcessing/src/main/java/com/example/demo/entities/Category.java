@@ -1,5 +1,7 @@
 package com.example.demo.entities;
 
+import com.example.demo.entities.products.Product;
+
 import javax.persistence.*;
 import java.util.Collections;
 import java.util.HashSet;

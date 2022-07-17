@@ -1,6 +1,8 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.*;
+import com.example.demo.entities.products.Product;
+import com.example.demo.entities.products.ProductImportDTO;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
