@@ -1,11 +1,13 @@
-package com.example.demo.entities;
+package com.example.demo.entities.users;
+
+import com.example.demo.entities.products.Product;
 
 import javax.persistence.*;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
-@Entity(name = "users")
+@Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,12 +18,18 @@ public class User {
     private String lastName;
     @Column
     private Integer age;
+    @OneToMany(mappedBy = "seller")
+    private List<Product> sellingProducts;
+    @OneToMany(mappedBy = "buyer")
+    private List<Product> productsBought;
 
     @ManyToMany()
     private final Set<User> friends;
 
     protected User() {
         friends = new HashSet<>();
+        sellingProducts = new ArrayList<>();
+        productsBought = new ArrayList<>();
     }
 
 
@@ -70,5 +78,26 @@ public class User {
 
     public void addFriend(User friend) {
         friends.add(friend);
+    }
+
+    public List<Product> getSoldProducts() {
+        return sellingProducts.stream().filter(p -> p.getBuyer() != null).collect(Collectors.toList());
+//        return soldProducts;
+    }
+
+    public List<Product> getSellingProducts() {
+        return sellingProducts;
+    }
+
+    public void setSellingProducts(List<Product> sellingProducts) {
+        this.sellingProducts = sellingProducts;
+    }
+
+    public List<Product> getProductsBought() {
+        return productsBought;
+    }
+
+    public void setProductsBought(List<Product> productsBought) {
+        this.productsBought = productsBought;
     }
 }

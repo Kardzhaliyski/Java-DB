@@ -7,13 +7,13 @@ public class ProductWithoutBuyerDTO {
     private final BigDecimal price;
     private final String seller;
 
-    public ProductWithoutBuyerDTO(String name, BigDecimal price, String firstName, String lastName) {
+    public ProductWithoutBuyerDTO(String name, BigDecimal price, String sellerFirstName, String sellerLastName) {
         this.name = name;
         this.price = price;
-        if (firstName == null) {
-            this.seller = lastName;
+        if (sellerFirstName == null) {
+            this.seller = sellerLastName;
         } else {
-            this.seller = firstName + " " + lastName;
+            this.seller = sellerFirstName + " " + sellerLastName;
         }
     }
 

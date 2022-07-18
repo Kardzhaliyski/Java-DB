@@ -1,7 +1,7 @@
 package com.example.demo.entities.products;
 
 import com.example.demo.entities.Category;
-import com.example.demo.entities.User;
+import com.example.demo.entities.users.User;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
