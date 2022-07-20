@@ -50,17 +50,12 @@ public class UserServiceImpl implements com.example.demo.services.UserService {
     @Transactional
     public List<UserWithSellsDTO> getAllUsersWithSells() {
         List<User> usersWithSoldProducts = userRepository.findAllBySellingProductsBuyerIsNotNull();
-        //        UserWithSellsDTO[] map = modelMapper.map(usersWithSoldProducts, UserWithSellsDTO[].class);
         TypeMap<User, UserWithSellsDTO> typeMap = modelMapper.createTypeMap(User.class, UserWithSellsDTO.class);
         typeMap.addMapping(user -> user.getSoldProducts(),
-//                                    .stream()
-//                                    .filter(p -> p.getBuyer() != null)
-//                                    .collect(Collectors.toList()),
                             UserWithSellsDTO::setSoldProducts);
         System.out.println();
         return usersWithSoldProducts
                 .stream()
-//                .map(u -> modelMapper.)
                 .map(typeMap::map)
                 .collect(Collectors.toList());
     }

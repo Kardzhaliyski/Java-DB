@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
-import com.example.demo.entities.*;
+import com.example.demo.entities.categories.Category;
+import com.example.demo.entities.categories.CategoryImportDTO;
 import com.example.demo.entities.products.Product;
 import com.example.demo.entities.products.ProductImportDTO;
 import com.example.demo.entities.users.User;

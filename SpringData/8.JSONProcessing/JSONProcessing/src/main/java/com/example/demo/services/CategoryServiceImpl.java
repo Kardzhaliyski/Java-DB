@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
-import com.example.demo.entities.Category;
+import com.example.demo.entities.categories.Category;
+import com.example.demo.entities.categories.CategorySummaryDTO;
 import com.example.demo.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,5 +40,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void save(Category category) {
         categoryRepository.save(category);
+    }
+
+    @Override
+    public List<CategorySummaryDTO> getCategoriesSummarys() {
+        return categoryRepository.findAllCategoriesData();
     }
 }
